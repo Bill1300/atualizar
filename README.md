@@ -6,9 +6,21 @@
  Para utilizar o programa execute o comando:
 >atualizar
 
-### Desinstalar
- Para desinstalar o programa execute o comando:
->atualizar-desinstalar
+### Parâmetros
+ Use para apresentar os parâmetros de entrada e o link do projeto (GitHub):
+ `-a`, `--ajuda`, `-h` ou `--help`
+ Exemplo:
+> atualizar --ajuda
+
+ Use para desinstalar:
+ `-d`, `--desinstalar`, `-u` ou `--uninstall`
+ Exemplo:
+> atualizar --desinstalar
+
+ Use para executar somente funções simples de atualização de diretórios, kernel e distribuição:
+ `-s`, `--simples` ou `--simple`
+ Exemplo:
+> atualizar --simples
 
 ### Aplicativos
 Alguns dos pacotes instalados dos aplicativos disponibilizados usam **snap**, que é instalado quando algum dos aplicativo da lista for selecionado.

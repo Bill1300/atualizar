@@ -3,13 +3,6 @@
 #Verificando arquivo script.
 function verificarArquivo(){
 
-    function criarDesinstalar(){
-        echo -e "#!/bin/bash\nfunction desinstalar() {\n\techo -e '\e[34;1mTchau \e[1;37m' \n\tsudo rm -f /bin/atualizar\n\tsudo rm -f /bin/atualizar-desinstalar\n}\ndesinstalar" | sudo tee -a atualizar-desinstalar.sh > /dev/null
-        sudo chmod +x atualizar-desinstalar.sh
-        sudo mv atualizar-desinstalar.sh atualizar-desinstalar
-    }
-
-
     function moverArquivos(){
         comandoAddrMover=`sudo find / -type f -name 'atualizar.sh' 2>/dev/null`
         sudo mv $comandoAddrMover /bin
@@ -24,7 +17,7 @@ function verificarArquivo(){
         
         valor1="0" # Informação de reinicialização
         valor2="0" # Informação de instalação de apps
-        
+
         # 1- Atualizar os repositórios.
         function f1() {
             clear
@@ -96,7 +89,7 @@ function verificarArquivo(){
             echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a'
             echo ""
         }
-        
+               
         # Adicionar temporizador para leitura do usuário de f7()
         function sys_reboot() {
             if [ "$valor1" = "S" ] || [ "$valor1" = "s" ]; then
@@ -538,18 +531,83 @@ function verificarArquivo(){
         sys_reboot
         
     }
+
+        # f1, f2 f3 e f7. 
+        function simples() {
+            clear
+            echo ""
+            echo -e " \e[34;1m(1/4)Atualizando Repositórios. \e[1;33m"
+            echo ""
+            sudo apt update -y
+            clear
+            echo ""
+            echo -e " \e[34;1m(2/4)Atualizando Kernel Linux. \e[1;37m"
+            echo ""
+            sudo apt upgrade -y
+            clear
+            echo ""
+            echo -e " \e[34;1m(3/4)Atualizando Distribuição Linux. \e[1;37m"
+            echo ""
+            sudo apt dist-upgrade -y
+            clear
+            echo -e "\e[34;1m(7/7)Atualização conclúida com sucesso. \e[1;37m"
+            echo ""
+            echo -e "\e[34;0mSistema: \e[1;37m"
+            sudo uname -o
+            echo ""
+            echo -e "\e[34;0mVersão do Kernel: \e[1;37m"
+            sudo uname -r
+            echo ""
+            echo -e "\e[34;0mVersão da distribuição: \e[1;37m"
+            sudo cat /etc/issue.net
+            echo ""
+            echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a'
+            echo ""
+        }
+
+    function desinstalar() {
+        echo -e " \e[34;1mTchau \e[1;37m" 
+        sudo rm -f /bin/atualizar
+    }
+
+    function ajuda() {
+        clear
+        echo -e " \e[34;1mComandos: \e[1;37m\n"
+        echo -e "-a, --ajuda, -h, --help   [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA E O LINK DO PROJETO (GITHUB)]\n"
+        echo -e "-d, --desinstalar, -u, --uninstall   [USE PARA DESINSTALAR]\n"
+        echo -e "-s, --simples, --simple   [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n\n"
+        echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n'
+    }
     
-    echo -e " \e[34;1mIniciando... \e[1;37m"
     comandoAddrFixo=`sudo find /bin -type f -name "atualizar"`
     
     if [ -z $comandoAddrFixo ];then
+        echo -e " \e[34;1mIniciando... \e[1;37m"
         moverArquivos
-        criarDesinstalar   
     else
-        execAtualizar
+        if [ -n "$parametro" ];
+        then
+            case $parametro in
+            -d | --desinstalar | -u | --uninstall)
+                desinstalar
+            ;;
+            -a | --ajuda | -h | --help)
+                ajuda
+            ;;
+            -s | --simples | --simple)
+                simples
+            ;;
+            *)
+                echo -e "\nParâmetro desconhecido, tente \033[1matualizar --help\033[0m para ver entradas corretas."
+            ;;
+            esac
+        else
+            echo -e " \e[34;1mIniciando... \e[1;37m"
+            execAtualizar
+        fi
     fi
 }
 
 ##################################################
-
+parametro=$1
 verificarArquivo
