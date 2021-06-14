@@ -4,7 +4,7 @@
 function verificarArquivo(){
 
     function moverArquivos(){
-        comandoAddrMover=`sudo find / -type f -name 'atualizar.sh' 2>/dev/null`
+        comandoAddrMover=`sudo find / -type f -name "atualizar.sh" 2>/dev/null`
         sudo mv $comandoAddrMover /bin
         cd /bin
         sudo chmod +x atualizar.sh
@@ -15,104 +15,120 @@ function verificarArquivo(){
     
     function execAtualizar(){
         
+        parametroExec=$1
         valor1="0" # Informação de reinicialização
         valor2="0" # Informação de instalação de apps
 
         # 1- Atualizar os repositórios.
         function f1() {
+            parametroF1=$1
             clear
-            echo ""
-            echo -e " \e[34;1m(1/7)Atualizando Repositórios. \e[1;37m"
-            echo ""
+            if [ ! -z "$parametroF1" ]
+            then
+                echo -e "\n \e[34;1m(1/4)Atualizando Repositórios. \e[1;37m\n"
+            else
+                echo -e "\n \e[34;1m(1/7)Atualizando Repositórios. \e[1;37m\n"
+            fi
             sudo apt update -y
         }
         
         # 2- Atualizar Kernel Linux.
         function f2() {
+            parametroF2=$1
             clear
-            echo ""
-            echo -e " \e[34;1m(2/7)Atualizando Kernel Linux. \e[1;37m"
-            echo ""
+            if [ ! -z "$parametroF2" ]
+            then
+                echo -e "\n \e[34;1m(2/4)Atualizando Kernel Linux. \e[1;37m\n"
+            else
+                echo -e "\n \e[34;1m(2/7)Atualizando Kernel Linux. \e[1;37m\n"
+            fi
             sudo apt upgrade -y
         }
         
         # 3- Atualizar a distribuição Linux.
         function f3() {
+            parametroF3=$1
             clear
-            echo ""
-            echo -e " \e[34;1m(3/7)Atualizando Distribuição Linux. \e[1;37m"
-            echo ""
+            if [ ! -z "$parametroF3" ]
+            then
+                echo -e "\n \e[34;1m(3/4)Atualizando Distribuição Linux. \e[1;37m\n"
+            else
+                echo -e "\n \e[34;1m(3/7)Atualizando Distribuição Linux. \e[1;37m\n"
+            fi
             sudo apt dist-upgrade -y
         }
         
         # 4- Removendo arquivos desnecessários para o Sistema usados na atualização.
         function f4() {
             clear
-            echo ""
-            echo -e " \e[34;1m(4/7)Removendo arquivos desnecessários para o Sistema usados na atualização. \e[1;37m"
-            echo ""
+            echo -e "\n \e[34;1m(4/7)Removendo arquivos desnecessários para o Sistema usados na atualização. \e[1;37m\n"
             sudo apt autoclean -y
         }
         
         # 5- Removendo arquivos do repositório local desnecessários para o Sistema.
         function f5() {
             clear
-            echo ""
-            echo -e " \e[34;1m(5/7)Removendo arquivos do repositório local desnecessários para o Sistema.  \e[1;37m"
-            echo ""
+            echo -e "\n \e[34;1m(5/7)Removendo arquivos do repositório local desnecessários para o Sistema.  \e[1;37m\n"
             sudo apt autoremove -y
         }
         
         # 6- Removendo Remove os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/.
         function f6() {
             clear
-            echo ""
-            echo -e " \e[34;1m(6/7)Removendo os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/. \e[1;37m"
-            echo ""
+            echo -e "\n \e[34;1m(6/7)Removendo os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/. \e[1;37m\n"
             sudo apt clean -y
         }
         
         # 7- Mostra versões instaladas.
         function f7() {
+            parametroF7=$1
             clear
-            echo -e "\e[34;1m(7/7)Atualização conclúida com sucesso. \e[1;37m"
-            echo ""
-            echo -e "\e[34;0mSistema: \e[1;37m"
+            notify-send "atualizar" "Atualização conclúida com sucesso."
+
+            if [ ! -z "$parametroF7" ];
+            then
+                echo -e "\e[34;1m(4/4)Atualização conclúida com sucesso. \e[1;37m"
+            else
+                echo -e "\e[34;1m(7/7)Atualização conclúida com sucesso. \e[1;37m"
+            fi
+            
+            echo -e "\n\e[34;0mSistema: \e[1;37m"
             sudo uname -o
-            echo ""
-            echo -e "\e[34;0mVersão do Kernel: \e[1;37m"
+            echo -e "\n\e[34;0mVersão do Kernel: \e[1;37m"
             sudo uname -r
-            echo ""
-            echo -e "\e[34;0mVersão da distribuição: \e[1;37m"
+            echo -e "\n\e[34;0mVersão da distribuição: \e[1;37m"
             sudo cat /etc/issue.net
-            echo ""
-            echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a'
-            echo ""
+            echo -e "\n\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n"
         }
                
-        # Adicionar temporizador para leitura do usuário de f7()
+        # Adicionar temporizador para leitura do usuário de f7.
         function sys_reboot() {
-            if [ "$valor1" = "S" ] || [ "$valor1" = "s" ]; then
-                echo -e ""
-                echo -e "\e[1;41mO SISTEMA VAI REINICIAR EM 60 SEGUNDOS."
-                echo -e ""
-                echo -e "\e[1;41mS - PARA REINICIAR AGORA"
+            if [ "$valor1" = "S" -o "$valor1" = "s" ];
+            then
+
+                echo -e "\n\e[1;41mO SISTEMA VAI REINICIAR EM 60 SEGUNDOS."
+                echo -e "\n\e[1;41mS - PARA REINICIAR AGORA"
                 echo -e "\e[1;41mN - PARA CANCELAR O REINÍCIO AUTOMÁTICO.\e[0m"
                 
-                v_cont=0
-                valorR="X"
-                while [ $v_cont -lt 60 ]; do
-                    read -n1 -t1 valorR
+                valorR=""
+                tempoInicial=`date +%s`
+                tempoFinal=$((tempoInicial + 60))
+
+                while [[ tempoInicial -le tempoFinal ]]; do
                     if [ "$valorR" == "S" -o "$valorR" == "s" ]; then
-                        sudo reboot
+                        #sudo reboot
+                        echo "reboot"
                     fi
                     if [ "$valorR" == "N" -o "$valorR" == "n" ]; then
                         clear
                         exit
                     fi
-                    let v_cont=v_cont+1
+                    read -n1 -t1 valorR
+                    tempoInicial=`date +%s`
+                    echo $tempoInicial
                 done
-                sudo reboot
+                #sudo reboot
+                echo "reboot"
             fi
         }
         
@@ -519,54 +535,34 @@ function verificarArquivo(){
                 clear
             fi
         }
-        
-        menuVerificacao
-        f1
-        f2
-        f3
-        f4
-        f5
-        f6
-        f7
-        sys_reboot
-        
+
+        if [ $parametroExec = "S" ]
+        then
+            f1 $parametroExec
+            f2 $parametroExec
+            f3 $parametroExec
+            f7 $parametroExec
+        else
+            menuVerificacao
+            f1
+            f2
+            f3
+            f4
+            f5
+            f6
+            f7
+            sys_reboot
+        fi
     }
 
-        # f1, f2 f3 e f7. 
-        function simples() {
-            clear
-            echo ""
-            echo -e " \e[34;1m(1/4)Atualizando Repositórios. \e[1;33m"
-            echo ""
-            sudo apt update -y
-            clear
-            echo ""
-            echo -e " \e[34;1m(2/4)Atualizando Kernel Linux. \e[1;37m"
-            echo ""
-            sudo apt upgrade -y
-            clear
-            echo ""
-            echo -e " \e[34;1m(3/4)Atualizando Distribuição Linux. \e[1;37m"
-            echo ""
-            sudo apt dist-upgrade -y
-            clear
-            echo -e "\e[34;1m(7/7)Atualização conclúida com sucesso. \e[1;37m"
-            echo ""
-            echo -e "\e[34;0mSistema: \e[1;37m"
-            sudo uname -o
-            echo ""
-            echo -e "\e[34;0mVersão do Kernel: \e[1;37m"
-            sudo uname -r
-            echo ""
-            echo -e "\e[34;0mVersão da distribuição: \e[1;37m"
-            sudo cat /etc/issue.net
-            echo ""
-            echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a'
-            echo ""
-        }
+    # Função de execução simples (f1, f2, f3 e f7). 
+    function simples() {
+        simples="S"
+        execAtualizar $simples
+    }
 
     function desinstalar() {
-        echo -e " \e[34;1mTchau \e[1;37m" 
+        echo -e " \e[34;1mTchau \e[1;37m"
         sudo rm -f /bin/atualizar
     }
 
