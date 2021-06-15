@@ -9,16 +9,19 @@
 ### Parâmetros
  Use para apresentar os parâmetros de entrada e o link do projeto (GitHub):
  `-a`, `--ajuda`, `-h` ou `--help`
+ 
  Exemplo:
 > atualizar --ajuda
 
  Use para desinstalar:
  `-d`, `--desinstalar`, `-u` ou `--uninstall`
+
  Exemplo:
 > atualizar --desinstalar
 
  Use para executar somente funções simples de atualização de diretórios, kernel e distribuição:
  `-s`, `--simples` ou `--simple`
+
  Exemplo:
 > atualizar --simples
 
@@ -41,13 +44,16 @@ Ubuntu Tweaks (GNOME) | apt install gnome-tweaks
 ### Comandos de atualização do sistema
 Comando  | Descrição
 ------------- | -------------
-apt update -y | Atualiza os diretórios atuais.
-apt upgrade -y | Atualiza o sistema com novos diretórios necessários.
-apt dist-upgrade -y | Atualiza a distribuição Linux.
-apt autoclean -y | Remove os arquivos desnecessários para o sistema usados na atualização.
-apt autoremove -y | Remove os arquivos do repositório local desnecessários para o sistema.   
-apt clean -y | Remove os arquivos do **/var/cache/apt/archives/** e **/var/cache/apt/archives/partial/**.
+apt update | Atualiza os diretórios atuais.
+apt upgrade | Atualiza o sistema com novos diretórios necessários.
+apt dist-upgrade | Atualiza a distribuição Linux.
+apt autoclean | Remove os arquivos desnecessários para o sistema usados na atualização.
+apt autoremove | Remove os arquivos do repositório local desnecessários para o sistema.   
+apt clean | Remove os arquivos do **/var/cache/apt/archives/** e **/var/cache/apt/archives/partial/**.
 uname -o | Apresenta a versão do sistema.
 uname -v | Apresenta a versão do Kernel Linux.
 cat /etc/issue.net | Apresenta a versão da distribuição Linux.
 reboot | Reinicia o computador.
+
+### Logs
+A aplicação cria documentos de texto no diretório **~/.atualizar/logs** mostrando as informações de todas as vezes que executado. O arquivo de texto é salvo com a data, nome do usuário, versões modificadas e pacotes instalados.

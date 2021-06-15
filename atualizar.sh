@@ -4,11 +4,18 @@
 function verificarArquivo(){
 
     function moverArquivos(){
-        comandoAddrMover=`sudo find / -type f -name "atualizar.sh" 2>/dev/null`
+        comandoAddrMover=`pwd 2>/dev/null`
+        comandoAddrMover="$comandoAddrMover/atualizar.sh"
+        
         sudo mv $comandoAddrMover /bin
         cd /bin
         sudo chmod +x atualizar.sh
         sudo mv atualizar.sh atualizar
+
+        #Diretório de logs.
+        sudo mkdir ~/.atualizar
+        sudo mkdir ~/.atualizar/logs
+        
         clear
         echo -e " \e[34;1mInstalação completa. \e[1;37m"
     }
@@ -18,6 +25,27 @@ function verificarArquivo(){
         parametroExec=$1
         valor1="0" # Informação de reinicialização
         valor2="0" # Informação de instalação de apps
+
+        versaoAnterior=`uname -a`
+        pacotesDisponiveis=`sudo apt list --upgradable 2>/dev/null`
+
+        #Criar Log com infomações da execução.
+        function criarLog(){
+                        
+            versaoAtual=`uname -a`
+            dataLog=`date '+%d-%m-%Y_%H-%M-%S'`
+            
+            usuarioTexto=`whoami`
+            dataTexto=`date '+%d/%m/%Y %H:%M:%S'`
+            
+            if [ "$versaoAtual" = "$versaoAnterior" ];
+            then
+                echo -e "Executado por $usuarioTexto ($dataTexto).\n\nA versão não foi modificada: $versaoAtual\n\nPacotes instalados:\n$pacotesDisponiveis" | sudo tee ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+            else
+                echo -e "Executado por $usuarioTexto ($dataTexto).\n\nVersao anterior: $versaoAnterior\nVersao instalada:$versaoAtual\n\nPacotes instalados:\n$pacotesDisponiveis" | sudo tee ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+            fi
+        }
+        
 
         # 1- Atualizar os repositórios.
         function f1() {
@@ -92,6 +120,8 @@ function verificarArquivo(){
                 echo -e "\e[34;1m(7/7)Atualização conclúida com sucesso. \e[1;37m"
             fi
             
+            criarLog
+            
             echo -e "\n\e[34;0mSistema: \e[1;37m"
             sudo uname -o
             echo -e "\n\e[34;0mVersão do Kernel: \e[1;37m"
@@ -116,8 +146,7 @@ function verificarArquivo(){
 
                 while [[ tempoInicial -le tempoFinal ]]; do
                     if [ "$valorR" == "S" -o "$valorR" == "s" ]; then
-                        #sudo reboot
-                        echo "reboot"
+                        sudo reboot
                     fi
                     if [ "$valorR" == "N" -o "$valorR" == "n" ]; then
                         clear
@@ -127,8 +156,7 @@ function verificarArquivo(){
                     tempoInicial=`date +%s`
                     echo $tempoInicial
                 done
-                #sudo reboot
-                echo "reboot"
+                sudo reboot
             fi
         }
         
@@ -496,8 +524,7 @@ function verificarArquivo(){
                 fi
                 paginasApps
                 
-                echo ""
-                echo " S-Continuar  N-Cancelar  P-Próxima Página ($nPagina/$nMaxPagina)"
+                echo -e "\n S-Continuar  N-Cancelar  P-Próxima Página ($nPagina/$nMaxPagina)"
                 read -n1 valorRecebido
                 clear
                 
@@ -564,6 +591,7 @@ function verificarArquivo(){
     function desinstalar() {
         echo -e " \e[34;1mTchau \e[1;37m"
         sudo rm -f /bin/atualizar
+        sudo rm -r ~/.atualizar 2>/dev/null
     }
 
     function ajuda() {
