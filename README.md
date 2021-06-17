@@ -31,15 +31,15 @@ Alguns dos pacotes instalados dos aplicativos disponibilizados usam **snap**, qu
 Aplicativo  | Comando de instalação
 ------------- | -------------
 [Spotify](https://www.spotify.com/br/) | snap install spotify
-[Visual Studio Code](https://code.visualstudio.com/) | snap install code
 [Discord](https://discord.com/) | snap install discord
-[Opera](https://www.opera.com/pt-br) | snap install opera
-[VLC](https://www.videolan.org/vlc/index.pt-BR.html) | snap install vlc
-[git](https://git-scm.com/) | apt install git
-[GitKraken](https://www.gitkraken.com/) | snap install gitkraken --classic
-Ubuntu Tweaks (GNOME) | apt install gnome-tweaks
 [Telegram Desktop](https://desktop.telegram.org/) | snap install telegram-desktop
-[Node.js](https://nodejs.org/en/) | snap install node --classic
+[Slack](https://slack.com/) | snap install slack --classic
+[Draw.io](https://www.diagrams.net) | snap drawio
+[Visual Studio Code (Classic)](https://code.visualstudio.com/) | snap install code
+[Visual Studio Code Insiders (Classic)](https://code.visualstudio.com/insiders/) | snap install code-insiders --classic
+[Apache NetBeans](https://netbeans.apache.org) | snap install netbeans --classic
+[Android Studio](https://developer.android.com/studio) | snap install android-studio --classic
+[InkScape](https://inkscape.org/pt-br/) | snap install inkscape
 
 ### Comandos de atualização do sistema
 Comando  | Descrição

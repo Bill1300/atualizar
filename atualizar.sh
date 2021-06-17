@@ -210,8 +210,8 @@ function verificarArquivo(){
             nPagina=1 	  		#Paginamento de Apps
             nMaxPagina=3        #Numero Maximo de paginas
             
-            vetorNome=("Spotify" "Discord" "Telegram Desktop" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
-            vetorComando=("spotify" "discord" "telegram-desktop" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
+            vetorNome=("Spotify" "Discord" "Telegram Desktop" "Slack" "Draw.io" "Visual Studio Code (Classic)" "Visual Studio Code Insiders (Classic)" "Apache NetBeans" "Android Studio" "InkScape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
+            vetorComando=("spotify" "discord" "telegram-desktop" "slack --classic" "drawio" "code --classic" "(code-insiders --classic)" "netbeans --classic" "android-studio --classic" "inkscape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
             vetorValor=(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
             
             # Verificação de instalar/não instalar (Switch true-false)
