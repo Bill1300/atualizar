@@ -27,7 +27,10 @@ function verificarArquivo(){
         valorInstalarApps="0" # Informação de instalação de apps
 
         versaoAnterior=`uname -a`
-        pacotes=`sudo apt list --upgradable 2>/dev/null`
+
+        # 1o sed - Remove a palavra 'Listing...'; 2o sed - Lista cada pacote em uma nova linha; 3o sed - Exclui o 1o caractere (espaco vazio); 4o sed - Remove linha em branco; wc -l (contador de linhas).
+        exibirPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d'`
+        verificarPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d' | wc -l`
 
         #Criar Log com infomações da execução.
         function criarLog(){
@@ -36,34 +39,33 @@ function verificarArquivo(){
 
             versaoAtual=`uname -a`
             dataLog=`date '+%d-%m-%Y_%H-%M-%S'`
-            verificarPacotes=`sudo apt list --upgradable 2>/dev/null | sed '1d' | wc -l`
             
             usuarioTexto=`whoami`
             dataTexto=`date '+%d/%m/%Y %H:%M:%S'`
 
             #Gravar dados.
-            sudo echo -e "Executado por $usuarioTexto ($dataTexto).\n\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+            sudo echo -e "Executado por $usuarioTexto ($dataTexto)." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             
-            if [ ! -z $parametroLog ];
+            if [ $parametroLog = "[S]" ];
             then
-                sudo echo -e "Executado em modo \"Simples\".\n\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "Executado em modo \"Simples\"." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             else
-                sudo echo -e "Executado em modo \"Padrão\".\n\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "Executado em modo \"Padrão\"." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             fi
 
             if [ "$versaoAtual" = "$versaoAnterior" ];
             then
-                sudo echo -e "A versão NÃO foi modificada: $versaoAtual.\n\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "A versão NÃO foi modificada: $versaoAtual.\n" | sudo sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             else
-                sudo echo -e "Versão Anterior: $versaoAnterior.\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
-                sudo echo -e "Versão Instalada:$versaoAtual.\n\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "Versão Anterior: $versaoAnterior" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "Versão Instalada:$versaoAtual\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             fi
 
             if [ "$verificarPacotes" -eq 0 ];
             then
-                sudo echo -e "Nenhum pacote foi adicionado.\n\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "Nenhum pacote foi adicionado." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             else
-                sudo echo -e "Pacote(s) instalados:\n$pacotes" | sed '2d' | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "Pacote(s) instalados:\n$exibirPacotes" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             fi
         }
         
@@ -71,7 +73,7 @@ function verificarArquivo(){
         function f1() {
             parametroF1=$1
             clear
-            if [ ! -z "$parametroF1" ]
+            if [ "$parametroF1" = "[S]" ]
             then
                 echo -e "\n \e[34;1m(1/4)Atualizando Repositórios. \e[1;37m\n"
             else
@@ -80,15 +82,15 @@ function verificarArquivo(){
             sudo apt update -y
         }
         
-        # 2- Atualizar Kernel Linux.
+        # 2- Atualizar Linux.
         function f2() {
             parametroF2=$1
             clear
-            if [ ! -z "$parametroF2" ]
+            if [ "$parametroF2" = "[S]" ]
             then
-                echo -e "\n \e[34;1m(2/4)Atualizando Kernel Linux. \e[1;37m\n"
+                echo -e "\n \e[34;1m(2/4)Atualizando Linux. \e[1;37m\n"
             else
-                echo -e "\n \e[34;1m(2/7)Atualizando Kernel Linux. \e[1;37m\n"
+                echo -e "\n \e[34;1m(2/7)Atualizando Linux. \e[1;37m\n"
             fi
             sudo apt upgrade -y
         }
@@ -97,7 +99,7 @@ function verificarArquivo(){
         function f3() {
             parametroF3=$1
             clear
-            if [ ! -z "$parametroF3" ]
+            if [ "$parametroF3" = "[S]" ]
             then
                 echo -e "\n \e[34;1m(3/4)Atualizando Distribuição Linux. \e[1;37m\n"
             else
@@ -128,11 +130,11 @@ function verificarArquivo(){
         }
         
         # 7- Mostra versões instaladas.
-       function f7() {
+        function f7() {
             parametroF7=$1
             
             reset
-            if [ ! -z "$parametroF7" ];
+            if [ "$parametroF7" = "[S]" ];
             then
                 criarLog $parametroF7
             else
@@ -141,7 +143,7 @@ function verificarArquivo(){
 
             notify-send "atualizar" "Atualização conclúida com sucesso."
             
-            if [ ! -z "$parametroF7" ];
+            if [ "$parametroF7" = "[S]" ];
             then
                 echo -e "\e[34;1m(4/4)Atualização conclúida com sucesso. \e[1;37m"
             else
@@ -320,7 +322,7 @@ function verificarArquivo(){
             fi
         }
 
-        if [ "$parametroExec" = "S" ]
+        if [ "$parametroExec" = "[S]" ]
         then
             f1 $parametroExec
             f2 $parametroExec
@@ -341,7 +343,7 @@ function verificarArquivo(){
 
     # Função de execução simples (f1, f2, f3 e f7). 
     function simples() {
-        simples="S"
+        simples="[S]"
         execAtualizar $simples
     }
 
