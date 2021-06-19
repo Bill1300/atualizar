@@ -30,7 +30,7 @@ function verificarArquivo(){
 
         # 1o sed - Remove a palavra 'Listing...'; 2o sed - Lista cada pacote em uma nova linha; 3o sed - Exclui o 1o caractere (espaco vazio); 4o sed - Remove linha em branco; wc -l (contador de linhas).
         exibirPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d'`
-        verificarPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d' | wc -l`
+        numeroPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d' | wc -l`
 
         #Criar Log com infomações da execução.
         function criarLog(){
@@ -46,7 +46,7 @@ function verificarArquivo(){
             #Gravar dados.
             sudo echo -e "Executado por $usuarioTexto ($dataTexto)." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             
-            if [ $parametroLog = "[S]" ];
+            if [ "$parametroLog" = "[S]" ];
             then
                 sudo echo -e "Executado em modo \"Simples\"." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             else
@@ -61,11 +61,11 @@ function verificarArquivo(){
                 sudo echo -e "Versão Instalada:$versaoAtual\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             fi
 
-            if [ "$verificarPacotes" -eq 0 ];
+            if [ "$numeroPacotes" -eq 0 ];
             then
                 sudo echo -e "Nenhum pacote foi adicionado." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             else
-                sudo echo -e "Pacote(s) instalados:\n$exibirPacotes" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
+                sudo echo -e "$numeroPacotes pacote(s) adicionados:\n$exibirPacotes" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             fi
         }
         
@@ -156,6 +156,7 @@ function verificarArquivo(){
             sudo uname -r
             echo -e "\n\e[34;0mVersão da distribuição: \e[1;37m"
             sudo cat /etc/issue.net
+            echo -e "\nPacotes atualizados:\n\e[34;0m$numeroPacotes\e[1;37m"
             echo -e "\n\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n"
         }
                
