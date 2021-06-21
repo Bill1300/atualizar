@@ -41,19 +41,17 @@ Aplicativo  | Comando de instalação
 [Android Studio](https://developer.android.com/studio) | snap install android-studio --classic
 [InkScape](https://inkscape.org/pt-br/) | snap install inkscape
 
-### Comandos de atualização do sistema
-Comando  | Descrição
-------------- | -------------
-apt update | Atualiza os diretórios atuais.
-apt upgrade | Atualiza o sistema com novos diretórios necessários.
-apt dist-upgrade | Atualiza a distribuição Linux.
-apt autoclean | Remove os arquivos desnecessários para o sistema usados na atualização.
-apt autoremove | Remove os arquivos do repositório local desnecessários para o sistema.   
-apt clean | Remove os arquivos do **/var/cache/apt/archives/** e **/var/cache/apt/archives/partial/**.
-uname -o | Apresenta a versão do sistema.
-uname -v | Apresenta a versão do Kernel Linux.
-cat /etc/issue.net | Apresenta a versão da distribuição Linux.
-reboot | Reinicia o computador.
+### Funções
+Descrição | Comando | Modo
+------------- | ------------- | -------------
+Atualizar os repositórios. | apt update | Simples/Padrão
+Atualizar Linux. | apt upgrade | Simples/Padrão
+Atualizar a distribuição Linux. | apt dist-upgrade | Simples/Padrão
+Atualizar grub. | update-grub | Padrão
+Corrigir pacotes corrompidos. | apt install -f | Padrão
+Remove os arquivos desnecessários para o sistema usados na atualização. | apt autoclean | Padrão
+Remove os arquivos do repositório local desnecessários para o sistema. | apt autoremove | Padrão
+Remove os arquivos do **/var/cache/apt/archives/** e **/var/cache/apt/archives/partial/**. | apt clean | Padrão
 
 ### Logs
 A aplicação cria documentos de texto no diretório **~/.atualizar/logs** mostrando as informações de todas as vezes que executado. O arquivo de texto é salvo com a data, nome do usuário, versões modificadas e pacotes instalados.

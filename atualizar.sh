@@ -77,7 +77,7 @@ function verificarArquivo(){
             then
                 echo -e "\n \e[34;1m(1/4)Atualizando Repositórios. \e[1;37m\n"
             else
-                echo -e "\n \e[34;1m(1/7)Atualizando Repositórios. \e[1;37m\n"
+                echo -e "\n \e[34;1m(1/9)Atualizando Repositórios. \e[1;37m\n"
             fi
             sudo apt update -y
         }
@@ -90,7 +90,7 @@ function verificarArquivo(){
             then
                 echo -e "\n \e[34;1m(2/4)Atualizando Linux. \e[1;37m\n"
             else
-                echo -e "\n \e[34;1m(2/7)Atualizando Linux. \e[1;37m\n"
+                echo -e "\n \e[34;1m(2/9)Atualizando Linux. \e[1;37m\n"
             fi
             sudo apt upgrade -y
         }
@@ -103,34 +103,48 @@ function verificarArquivo(){
             then
                 echo -e "\n \e[34;1m(3/4)Atualizando Distribuição Linux. \e[1;37m\n"
             else
-                echo -e "\n \e[34;1m(3/7)Atualizando Distribuição Linux. \e[1;37m\n"
+                echo -e "\n \e[34;1m(3/9)Atualizando Distribuição Linux. \e[1;37m\n"
             fi
             sudo apt dist-upgrade -y
         }
-        
-        # 4- Removendo arquivos desnecessários para o Sistema usados na atualização.
+
+        # 4- Atualizar Grub.
         function f4() {
             clear
-            echo -e "\n \e[34;1m(4/7)Removendo arquivos desnecessários para o Sistema usados na atualização. \e[1;37m\n"
+            echo -e "\n \e[34;1m(4/9)Atualizando Grub. \e[1;37m\n"
+            sudo update-grub -y
+        }
+
+        # 5- Corrigir pacotes corrompidos.
+        function f5() {
+            clear
+            echo -e "\n \e[34;1m(5/9) Corrigindo pacotes corrompidos. \e[1;37m\n"
+            sudo apt install -f
+        }
+        
+        # 6- Removendo arquivos desnecessários para o Sistema usados na atualização.
+        function f6() {
+            clear
+            echo -e "\n \e[34;1m(6/9)Removendo arquivos desnecessários para o Sistema usados na atualização. \e[1;37m\n"
             sudo apt autoclean -y
         }
         
-        # 5- Removendo arquivos do repositório local desnecessários para o Sistema.
-        function f5() {
+        # 7- Removendo arquivos do repositório local desnecessários para o Sistema.
+        function f7() {
             clear
-            echo -e "\n \e[34;1m(5/7)Removendo arquivos do repositório local desnecessários para o Sistema.  \e[1;37m\n"
+            echo -e "\n \e[34;1m(7/9)Removendo arquivos do repositório local desnecessários para o Sistema.  \e[1;37m\n"
             sudo apt autoremove -y
         }
         
-        # 6- Removendo Remove os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/.
-        function f6() {
+        # 8- Removendo Remove os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/.
+        function f8() {
             clear
-            echo -e "\n \e[34;1m(6/7)Removendo os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/. \e[1;37m\n"
+            echo -e "\n \e[34;1m(8/9)Removendo os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/. \e[1;37m\n"
             sudo apt clean -y
         }
         
-        # 7- Mostra versões instaladas.
-        function f7() {
+        # - Mostra informações.
+        function f9() {
             parametroF7=$1
             
             reset
@@ -147,7 +161,7 @@ function verificarArquivo(){
             then
                 echo -e "\e[34;1m(4/4)Atualização conclúida com sucesso. \e[1;37m"
             else
-                echo -e "\e[34;1m(7/7)Atualização conclúida com sucesso. \e[1;37m"
+                echo -e "\e[34;1m(9/9)Atualização conclúida com sucesso. \e[1;37m"
             fi
 
             echo -e "\n\e[34;0mSistema: \e[1;37m"
@@ -156,7 +170,7 @@ function verificarArquivo(){
             sudo uname -r
             echo -e "\n\e[34;0mVersão da distribuição: \e[1;37m"
             sudo cat /etc/issue.net
-            echo -e "\nPacotes atualizados:\n\e[34;0m$numeroPacotes\e[1;37m"
+            echo -e "\n\e[34;0mPacotes atualizados:\n\e[1;37m$numeroPacotes"
             echo -e "\n\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n"
         }
                
@@ -323,12 +337,14 @@ function verificarArquivo(){
             fi
         }
 
+        #Chamada de modo "Simples"
         if [ "$parametroExec" = "[S]" ]
         then
             f1 $parametroExec
             f2 $parametroExec
             f3 $parametroExec
-            f7 $parametroExec
+            f9 $parametroExec
+        #Chamada de modo "Padrão"
         else
             menuVerificacao
             f1
@@ -338,6 +354,8 @@ function verificarArquivo(){
             f5
             f6
             f7
+            f8
+            f9
             sys_reboot
         fi
     }
