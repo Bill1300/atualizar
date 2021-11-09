@@ -15,6 +15,10 @@ function verificarArquivo(){
         #Diretório de logs.
         sudo mkdir ~/.atualizar
         sudo mkdir ~/.atualizar/logs
+        sudo mkdir ~/.atualizar/imgs
+        
+        wget -P ~/.atualizar/imgs https://i.imgur.com/z9hRO68.png
+        mv z9hRO68.png atualizarLogo64.png
         
         clear
         echo -e " \e[34;1mInstalação completa. \e[1;37m"
@@ -155,7 +159,7 @@ function verificarArquivo(){
                 criarLog
             fi
 
-            notify-send "atualizar" "Atualização conclúida com sucesso."
+            notify-send -i ~/.atualizar/imgs/atualizarLogo64.png "atualizar" "Atualização concluída com sucesso."
             
             if [ "$parametroF7" = "[S]" ];
             then
@@ -381,7 +385,7 @@ function verificarArquivo(){
         echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n'
     }
     
-    comandoEnderecoFixo=`sudo find /bin -type f -name "atualizar"`
+    comandoEnderecoFixo=`sudo find /usr/bin -type f -name atualizar`
     
     if [ -z "$comandoEnderecoFixo" ];then
         echo -e " \e[34;1mIniciando... \e[1;37m"
