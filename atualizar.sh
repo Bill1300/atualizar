@@ -249,19 +249,19 @@ function verificarArquivo(){
                 fi
             }
             
-            #Definição de comandos para instalação.
+            #Definição de comandos para instalação de aplicativos Snapcraft.
             function instalarApps(){
                 sudo apt install snapd
-                
-                for i in ${vetorValor[*]};
+                for i in ${!vetorValor[*]};
                 do
-                    if [[ "${vetorValor[i]}" -eq 1 ]];
+                    if ${vetorValor[i]};
                     then
                         clear
                         echo -e " \e[1;37mInstalando ${vetorNome[i]}...\e[1;37m\n"
                         sudo snap install ${vetorComando[i]}
                     fi
                 done
+                sudo snap refresh
             }
             
             #Paginação de menu de Apps.
