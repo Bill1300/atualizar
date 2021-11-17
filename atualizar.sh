@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #Verificando arquivo script.
-function verificarArquivo(){
+function verificarArquivo() {
 
-    function moverArquivos(){
+    function moverArquivos() {
         comandoEnderecoMover=`pwd 2>/dev/null`
         comandoEnderecoMover="$comandoEnderecoMover/atualizar.sh"
         
@@ -24,7 +24,7 @@ function verificarArquivo(){
         echo -e " \e[34;1mInstalação completa. \e[1;37m"
     }
     
-    function execAtualizar(){
+    function execAtualizar() {
         
         parametroExec=$1
         valorReiniciar="0" # Informação de reinicialização
@@ -37,7 +37,7 @@ function verificarArquivo(){
         numeroPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d' | wc -l`
 
         #Criar Log com infomações da execução.
-        function criarLog(){
+        function criarLog() {
             
             parametroLog=$1
 
@@ -231,7 +231,7 @@ function verificarArquivo(){
             vetorValor=( false false false false false false false false false false false false false false false )
             
             # Verificação de instalar/não instalar (Switch true-false)
-            function switchValorApp(){
+            function switchValorApp() {
                 
                 valorRecebido=$(( ($nPagina - 1) * 5 + ($valorRecebido - 1) ))
                 echo $valorRecebido
@@ -245,7 +245,7 @@ function verificarArquivo(){
             }
             
             #Definição de comandos para instalação de aplicativos Snapcraft.
-            function instalarApps(){
+            function instalarApps() {
                 sudo apt install snapd
                 for i in ${!vetorValor[*]};
                 do
@@ -260,9 +260,9 @@ function verificarArquivo(){
             }
             
             #Paginação de menu de Apps.
-            function paginasApps(){
+            function paginasApps() {
                 
-                function imprimirTela(){
+                function imprimirTela() {
                     if [ ${vetorValor[i]} == true ];
                     then
                         echo -e " \e[34;1m(OK)  $indiceCatalogo - ${vetorNome[i]}\e[1;37m"
@@ -359,12 +359,6 @@ function verificarArquivo(){
         fi
     }
 
-    # Função de execução simples (f1, f2, f3 e f7). 
-    function simples() {
-        simples="[S]"
-        execAtualizar $simples
-    }
-
     function desinstalar() {
         echo -e " \e[34;1mTchau \e[1;37m"
         sudo rm -f /bin/atualizar
@@ -378,6 +372,17 @@ function verificarArquivo(){
         echo -e "-d, --desinstalar, -u, --uninstall   [USE PARA DESINSTALAR]\n"
         echo -e "-s, --simples, --simple   [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n\n"
         echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n'
+    }
+
+    # Função de execução simples (f1, f2, f3 e f7). 
+    function simples() {
+        simples="[S]"
+        execAtualizar $simples
+    }
+
+    function atualizarArquivo() {
+        sudo snap install curl
+        sudo curl -# https://raw.githubusercontent.com/Bill1300/atualizar/main/atualizar.sh | sudo tee /usr/bin/atualizar >/dev/null
     }
     
     comandoEnderecoFixo=`sudo find /usr/bin -type f -name atualizar`
@@ -397,6 +402,9 @@ function verificarArquivo(){
             ;;
             -s | --simples | --simple)
                 simples
+            ;;
+            -r | --reescrever | --rewrite)
+                atualizarArquivo
             ;;
             *)
                 echo -e "Parâmetro desconhecido, tente: \033[1matualizar --help\033[0m para ver os parâmetros disponíveis."
