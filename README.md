@@ -25,6 +25,20 @@
  Exemplo:
 > atualizar --simples
 
+ Use para baixar e instalar a última versão do arquivo disponível:
+ `-r`, `--reescrever` ou `--rewrite`
+
+ Exemplo:
+> atualizar --reescrever
+
+ Use para apresentar a versão atual:
+ `-v`, `--versao` ou `--version`
+
+ Exemplo:
+> atualizar --versao
+
+
+
 ### Aplicativos
 Alguns dos pacotes instalados dos aplicativos disponibilizados usam **snap**, que é instalado quando algum dos aplicativo da lista for selecionado.
 
