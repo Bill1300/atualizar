@@ -372,7 +372,7 @@ function verificarArquivo() {
         echo -e "-a, --ajuda, -h, --help   [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA E O LINK DO PROJETO (GITHUB)]\n"
         echo -e "-d, --desinstalar, -u, --uninstall   [USE PARA DESINSTALAR]\n"
         echo -e "-s, --simples, --simple   [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n"
-        echo -e "-r, --reescrever, --rewrite   [USE PARA BAIXAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n"
+        echo -e "-r, --reescrever, --rewrite   [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n"
         echo -e "-v, --versao, --version   [USE PARA APRESENTAR A VERSÃO ATUAL]\n\n"
         echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n'
     }
