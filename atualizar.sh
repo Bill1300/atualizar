@@ -382,7 +382,7 @@ function verificarArquivo() {
     }
 
     function atualizarArquivo() {
-        sudo snap install curl
+        sudo snap install curl 2>/dev/null
         sudo curl -# https://raw.githubusercontent.com/Bill1300/atualizar/main/atualizar.sh | sudo tee /usr/bin/atualizar >/dev/null
     }
     
