@@ -17,8 +17,8 @@ function verificarArquivo(){
         sudo mkdir ~/.atualizar/logs
         sudo mkdir ~/.atualizar/imgs
         
-        wget -P ~/.atualizar/imgs https://i.imgur.com/z9hRO68.png
-        mv z9hRO68.png atualizarLogo64.png
+        sudo wget -P ~/.atualizar/imgs https://i.imgur.com/z9hRO68.png
+        sudo mv z9hRO68.png atualizarLogo64.png
         
         clear
         echo -e " \e[34;1mInstalação completa. \e[1;37m"
@@ -155,16 +155,11 @@ function verificarArquivo(){
             if [ "$parametroF7" = "[S]" ];
             then
                 criarLog $parametroF7
-            else
-                criarLog
-            fi
-
-            notify-send -i ~/.atualizar/imgs/atualizarLogo64.png "atualizar" "Atualização concluída com sucesso."
-            
-            if [ "$parametroF7" = "[S]" ];
-            then
+                notify-send -i ~/.atualizar/imgs/atualizarLogo64.png "atualizar (Simples)" "Atualização concluída com sucesso."
                 echo -e "\e[34;1m(4/4)Atualização conclúida com sucesso. \e[1;37m"
             else
+                criarLog
+                notify-send -i ~/.atualizar/imgs/atualizarLogo64.png "atualizar (Padrão)" "Atualização concluída com sucesso."
                 echo -e "\e[34;1m(9/9)Atualização conclúida com sucesso. \e[1;37m"
             fi
 
@@ -233,7 +228,7 @@ function verificarArquivo(){
             
             vetorNome=("Spotify" "Discord" "Telegram Desktop" "Slack" "Draw.io" "Visual Studio Code (Classic)" "Visual Studio Code Insiders (Classic)" "Apache NetBeans" "Android Studio" "InkScape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
             vetorComando=("spotify" "discord" "telegram-desktop" "slack --classic" "drawio" "code --classic" "(code-insiders --classic)" "netbeans --classic" "android-studio --classic" "inkscape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
-            vetorValor=(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+            vetorValor=( false false false false false false false false false false false false false false false )
             
             # Verificação de instalar/não instalar (Switch true-false)
             function switchValorApp(){
@@ -241,11 +236,11 @@ function verificarArquivo(){
                 valorRecebido=$(( ($nPagina - 1) * 5 + ($valorRecebido - 1) ))
                 echo $valorRecebido
 
-                if [[ "${vetorValor[$valorRecebido]}" -eq 1 ]];
+                if [ ${vetorValor[$valorRecebido]} == true ];
                 then
-                    vetorValor[$valorRecebido]=0
+                    vetorValor[$valorRecebido]=false
                 else
-                    vetorValor[$valorRecebido]=1
+                    vetorValor[$valorRecebido]=true
                 fi
             }
             
@@ -254,7 +249,7 @@ function verificarArquivo(){
                 sudo apt install snapd
                 for i in ${!vetorValor[*]};
                 do
-                    if ${vetorValor[i]};
+                    if [ ${vetorValor[i]} == true ];
                     then
                         clear
                         echo -e " \e[1;37mInstalando ${vetorNome[i]}...\e[1;37m\n"
@@ -268,7 +263,7 @@ function verificarArquivo(){
             function paginasApps(){
                 
                 function imprimirTela(){
-                    if [[ "${vetorValor[i]}" -eq 1 ]];
+                    if [ ${vetorValor[i]} == true ];
                     then
                         echo -e " \e[34;1m(OK)  $indiceCatalogo - ${vetorNome[i]}\e[1;37m"
                     else
@@ -336,7 +331,7 @@ function verificarArquivo(){
                 clear
                 for i in ${vetorValor[*]};
                 do
-                    vetorValor[i]=0
+                    vetorValor[i]=false
                 done
             fi
         }
@@ -404,7 +399,7 @@ function verificarArquivo(){
                 simples
             ;;
             *)
-                echo -e "\nParâmetro desconhecido, tente: \033[1matualizar --help\033[0m para ver os parâmetros disponíveis."
+                echo -e "Parâmetro desconhecido, tente: \033[1matualizar --help\033[0m para ver os parâmetros disponíveis."
             ;;
             esac
         else
