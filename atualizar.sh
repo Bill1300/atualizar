@@ -1,4 +1,5 @@
 #!/bin/bash
+versao="1.3"
 
 #Verificando arquivo script.
 function verificarArquivo() {
@@ -383,7 +384,11 @@ function verificarArquivo() {
 
     function atualizarArquivo() {
         sudo snap install curl 2>/dev/null
-        sudo curl -# https://raw.githubusercontent.com/Bill1300/atualizar/main/atualizar.sh | sudo tee /usr/bin/atualizar >/dev/null
+        sudo curl -sS https://raw.githubusercontent.com/Bill1300/atualizar/main/atualizar.sh | sudo tee /usr/bin/atualizar >/dev/null
+    }
+
+    function mostrarVersao() {
+         echo -e "O atualizar está na versão: \033[1m$versao\033[0m"
     }
     
     comandoEnderecoFixo=`sudo find /usr/bin -type f -name atualizar`
@@ -406,6 +411,9 @@ function verificarArquivo() {
             ;;
             -r | --reescrever | --rewrite)
                 atualizarArquivo
+            ;;
+            -v | --versao | --version)
+                mostrarVersao
             ;;
             *)
                 echo -e "Parâmetro desconhecido, tente: \033[1matualizar --help\033[0m para ver os parâmetros disponíveis."
