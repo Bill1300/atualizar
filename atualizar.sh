@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="1.3"
+versao="1.3.1"
 
 #Verificando arquivo script.
 function verificarArquivo() {
@@ -151,7 +151,6 @@ function verificarArquivo() {
         # - Mostra informações.
         function f9() {
             parametroF7=$1
-            
             reset
             if [ "$parametroF7" = "[S]" ];
             then
@@ -361,9 +360,21 @@ function verificarArquivo() {
     }
 
     function desinstalar() {
-        echo -e " \e[34;1mTchau \e[1;37m"
-        sudo rm -f /bin/atualizar
-        sudo rm -r ~/.atualizar 2>/dev/null
+        valorDesinstalar=0
+        while [ "$valorDesinstalar" != "S" -a "$valorDesinstalar" != "s" -a "$valorDesinstalar" != "N" -a "$valorDesinstalar" != "n" ]; do
+            clear
+            echo -e " \e[1;41m VOCÊ REALMENTE DESEJA DESINSTALAR? (S/N) \e[0m"
+            read -n1 valorDesinstalar
+        done
+        if [ "$valorDesinstalar" = "S" -o "$valorDesinstalar" = "s" ]; then
+            clear
+            echo -e " \e[34;1mTchau \e[1;37m"
+            sudo rm -r ~/.atualizar 2>/dev/null
+            sudo rm -f /bin/atualizar
+        else
+            clear
+            echo -e " \e[34;1mOperação cancelada \e[1;37m"
+        fi
     }
 
     function ajuda() {
@@ -386,6 +397,8 @@ function verificarArquivo() {
     function atualizarArquivo() {
         sudo snap install curl 2>/dev/null
         sudo curl -sS https://raw.githubusercontent.com/Bill1300/atualizar/main/atualizar.sh | sudo tee /usr/bin/atualizar >/dev/null
+        clear
+        mostrarVersao
     }
 
     function mostrarVersao() {
