@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="1.3.1"
+versao="1.3.5"
 
 #Verificando arquivo script.
 function verificarArquivo() {
@@ -13,7 +13,7 @@ function verificarArquivo() {
         sudo chmod +x atualizar.sh
         sudo mv atualizar.sh atualizar
 
-        #Diretório de logs.
+        # Diretório de logs.
         sudo mkdir ~/.atualizar
         sudo mkdir ~/.atualizar/logs
         sudo mkdir ~/.atualizar/imgs
@@ -37,7 +37,7 @@ function verificarArquivo() {
         exibirPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d'`
         numeroPacotes=`sudo apt list --upgradable 2>/dev/null | sed 's/Listing...//' | sed 's/] /]\n/g' | sed 's/^ //' | sed '1d' | wc -l`
 
-        #Criar Log com infomações da execução.
+        # Criar Log com infomações da execução.
         function criarLog() {
             
             parametroLog=$1
@@ -48,7 +48,7 @@ function verificarArquivo() {
             usuarioTexto=`whoami`
             dataTexto=`date '+%d/%m/%Y %H:%M:%S'`
 
-            #Gravar dados.
+            # Gravar dados.
             sudo echo -e "Executado por $usuarioTexto ($dataTexto)." | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt > /dev/null
             
             if [ "$parametroLog" = "[S]" ];
@@ -148,7 +148,7 @@ function verificarArquivo() {
             sudo apt clean -y
         }
         
-        # - Mostra informações.
+        # 9- Mostra informações.
         function f9() {
             parametroF7=$1
             reset
@@ -201,7 +201,7 @@ function verificarArquivo() {
             fi
         }
         
-        # Informação de usuário para execução
+        # Informação de usuário para execução.
         function menuVerificacao() {
             while [ "$valorReiniciar" != "S" -a "$valorReiniciar" != "s" -a "$valorReiniciar" != "N" -a "$valorReiniciar" != "n" ]; do
                 clear
@@ -222,15 +222,15 @@ function verificarArquivo() {
         
         function f_apps() {
             
-            valorRecebido="0" 	#Valor de entrada do usuário
-            nPagina=1 	  		#Paginamento de Apps
-            nMaxPagina=3        #Numero Maximo de paginas
+            valorRecebido="0" 	#Valor de entrada do usuário.
+            nPagina=1 	  		#Paginamento de Apps.
+            nMaxPagina=3        #Numero Maximo de paginas.
             
             vetorNome=("Spotify" "Discord" "Telegram Desktop" "Slack" "Draw.io" "Visual Studio Code (Classic)" "Visual Studio Code Insiders (Classic)" "Apache NetBeans" "Android Studio" "InkScape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
             vetorComando=("spotify" "discord" "telegram-desktop" "slack --classic" "drawio" "code --classic" "(code-insiders --classic)" "netbeans --classic" "android-studio --classic" "inkscape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
             vetorValor=( false false false false false false false false false false false false false false false )
             
-            # Verificação de instalar/não instalar (Switch true-false)
+            # Verificação de instalar/não instalar (Switch true-false).
             function switchValorApp() {
                 
                 valorRecebido=$(( ($nPagina - 1) * 5 + ($valorRecebido - 1) ))
@@ -244,8 +244,14 @@ function verificarArquivo() {
                 fi
             }
             
-            #Definição de comandos para instalação de aplicativos Snapcraft.
+            # Definição de comandos para instalação de aplicativos Snapcraft.
             function instalarApps() {
+                # Remoção de arquivo de restrição (para execução em Mint).
+                valorRetorno=`ls /etc/apt/preferences.d/nosnap.pref`
+                if [ "$valorRetorno" = "/etc/apt/preferences.d/nosnap.pref" ];
+                then
+                    sudo rm /etc/apt/preferences.d/nosnap.pref
+                fi
                 sudo apt install snapd
                 for i in ${!vetorValor[*]};
                 do
@@ -259,7 +265,7 @@ function verificarArquivo() {
                 sudo snap refresh
             }
             
-            #Paginação de menu de Apps.
+            # Paginação de menu de Apps.
             function paginasApps() {
                 
                 function imprimirTela() {
@@ -300,7 +306,7 @@ function verificarArquivo() {
                 esac
             }
             
-            # Loop de seleção de aplicativos
+            # Loop de seleção de aplicativos.
             while [ "$valorRecebido" != "S" -a "$valorRecebido" != "s" -a "$valorRecebido" != "N" -a "$valorRecebido" != "n" ]; do
                 
                 if [ "$valorRecebido" = "P" -o "$valorRecebido" = "p" ]; then
@@ -326,7 +332,7 @@ function verificarArquivo() {
             if [ "$valorRecebido" = "S" -o "$valorRecebido" = "s" ];then
                 instalarApps
 
-            #Caso N - Cancelar intalação.
+            # Caso N - Cancelar intalação.
             else
                 clear
                 for i in ${vetorValor[*]};
@@ -336,14 +342,14 @@ function verificarArquivo() {
             fi
         }
 
-        #Chamada de modo "Simples"
+        # Chamada de modo "Simples".
         if [ "$parametroExec" = "[S]" ]
         then
             f1 $parametroExec
             f2 $parametroExec
             f3 $parametroExec
             f9 $parametroExec
-        #Chamada de modo "Padrão"
+        # Chamada de modo "Padrão".
         else
             menuVerificacao
             f1
@@ -360,32 +366,45 @@ function verificarArquivo() {
     }
 
     function desinstalar() {
-        valorDesinstalar=0
-        while [ "$valorDesinstalar" != "S" -a "$valorDesinstalar" != "s" -a "$valorDesinstalar" != "N" -a "$valorDesinstalar" != "n" ]; do
-            clear
-            echo -e " \e[1;41m VOCÊ REALMENTE DESEJA DESINSTALAR? (S/N) \e[0m"
-            read -n1 valorDesinstalar
-        done
-        if [ "$valorDesinstalar" = "S" -o "$valorDesinstalar" = "s" ]; then
+        function desinstalarComandos() {
             clear
             echo -e " \e[34;1mTchau \e[1;37m"
             sudo rm -r ~/.atualizar 2>/dev/null
             sudo rm -f /bin/atualizar
+        }
+        parametroS=$1
+        # Execução direta / Com confirmação.
+        if [ "$parametroS" = "-S" ];
+        then
+            desinstalarComandos
         else
-            clear
-            echo -e " \e[34;1mOperação cancelada \e[1;37m"
+            valorDesinstalar=0
+            while [ "$valorDesinstalar" != "S" -a "$valorDesinstalar" != "s" -a "$valorDesinstalar" != "N" -a "$valorDesinstalar" != "n" ]; do
+                clear
+                echo -e " \e[1;41m VOCÊ REALMENTE DESEJA DESINSTALAR? (S/N) \e[0m"
+                read -n1 valorDesinstalar
+            done
+            if [ "$valorDesinstalar" = "S" -o "$valorDesinstalar" = "s" ]; then
+                desinstalarComandos
+            else
+                clear
+                echo -e " \e[34;1mOperação cancelada \e[1;37m"
+            fi
         fi
     }
 
     function ajuda() {
         clear
         echo -e " \e[34;1mComandos: \e[1;37m\n"
-        echo -e "-a, --ajuda, -h, --help   [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA E O LINK DO PROJETO (GITHUB)]\n"
-        echo -e "-d, --desinstalar, -u, --uninstall   [USE PARA DESINSTALAR]\n"
-        echo -e "-s, --simples, --simple   [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n"
-        echo -e "-r, --reescrever, --rewrite   [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n"
-        echo -e "-v, --versao, --version   [USE PARA APRESENTAR A VERSÃO ATUAL]\n\n"
-        echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n'
+        echo -e "-a, --ajuda, -h, --help             [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA, O LINK DO PROJETO E O LINK DE FEEDBACK]\n"
+        echo -e "-d, --desinstalar, -u, --uninstall  [USE PARA DESINSTALAR, HÁ UM PEDIDO DE CONFIRMAÇÃO]"
+        echo -e "-D                                  [USE PARA DESINSTALAR]\n"
+        echo -e "-s, --simples, --simple             [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n"
+        echo -e "-r, --reescrever, --rewrite         [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL, HÁ UM PEDIDO DE CONFIRMAÇÃO]"
+        echo -e "-R                                  [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n"
+        echo -e "-v, --versao, --version             [USE PARA APRESENTAR A VERSÃO ATUAL]\n\n"
+        echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a'
+        echo -e '\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n'
     }
 
     # Função de execução simples (f1, f2, f3 e f7). 
@@ -393,12 +412,33 @@ function verificarArquivo() {
         simples="[S]"
         execAtualizar $simples
     }
-
+    # Função de reescrita de arquivo usando o arquivo "raw" no GitHub.
     function atualizarArquivo() {
-        sudo snap install curl 2>/dev/null
-        sudo curl -sS https://raw.githubusercontent.com/Bill1300/atualizar/main/atualizar.sh | sudo tee /usr/bin/atualizar >/dev/null
-        clear
-        mostrarVersao
+        function atualizarArquivoComandos() {
+            sudo snap install curl 2>/dev/null
+            sudo curl -sS https://raw.githubusercontent.com/Bill1300/atualizar/main/atualizar.sh | sudo tee /usr/bin/atualizar >/dev/null
+            clear
+            mostrarVersao
+        }
+        parametroS=$1
+        # Execução direta / Com confirmação.
+        if [ "$parametroS" = "-S" ];
+        then
+            atualizarArquivoComandos
+        else
+            valorReescrita=0
+            while [ "$valorReescrita" != "S" -a "$valorReescrita" != "s" -a "$valorReescrita" != "N" -a "$valorReescrita" != "n" ]; do
+                clear
+                echo -e " \e[34;1mVocê realmente deseja reescrever o arquivo para a versão mais atual? (S/N) \e[1;37m"
+                read -n1 valorReescrita
+            done
+            if [ "$valorReescrita" = "S" -o "$valorReescrita" = "s" ]; then
+                atualizarArquivoComandos
+            else
+                clear
+                echo -e " \e[34;1mOperação cancelada \e[1;37m"
+            fi
+        fi
     }
 
     function mostrarVersao() {
@@ -417,6 +457,9 @@ function verificarArquivo() {
             -d | --desinstalar | -u | --uninstall)
                 desinstalar
             ;;
+            -D)
+                desinstalar -S
+            ;;
             -a | --ajuda | -h | --help)
                 ajuda
             ;;
@@ -425,6 +468,9 @@ function verificarArquivo() {
             ;;
             -r | --reescrever | --rewrite)
                 atualizarArquivo
+            ;;
+            -R)
+                atualizarArquivo -S
             ;;
             -v | --versao | --version)
                 mostrarVersao

@@ -15,6 +15,7 @@
 
  Use para desinstalar:
  `-d`, `--desinstalar`, `-u` ou `--uninstall`
+ (use -D para desinstalar sem uma confirmação).
 
  Exemplo:
 > atualizar --desinstalar
@@ -27,6 +28,7 @@
 
  Use para baixar e instalar a última versão do arquivo disponível:
  `-r`, `--reescrever` ou `--rewrite`
+ (use -R para reescrever sem uma confirmação).
 
  Exemplo:
 > atualizar --reescrever
@@ -66,6 +68,10 @@ Corrigir pacotes corrompidos. | apt install -f | Padrão
 Remove os arquivos desnecessários para o sistema usados na atualização. | apt autoclean | Padrão
 Remove os arquivos do repositório local desnecessários para o sistema. | apt autoremove | Padrão
 Remove os arquivos do **/var/cache/apt/archives/** e **/var/cache/apt/archives/partial/**. | apt clean | Padrão
+Atualizar pacotes Snap | snap refresh | Padrão
 
 ### Logs
 A aplicação cria documentos de texto no diretório **~/.atualizar/logs** mostrando as informações de todas as vezes que executado. O arquivo de texto é salvo com a data, nome do usuário, versões modificadas e pacotes instalados.
+
+### Feedback
+Você teve algum problema ao executar? Alguma ideia de funcionalidade nova? [Escreva aqui!](https://forms.gle/ysh5avJ1WCGsWeoH6)
