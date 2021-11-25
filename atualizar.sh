@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="1.3.5"
+versao="1.3.6"
 
 #Verificando arquivo script.
 function verificarArquivo() {
@@ -19,7 +19,7 @@ function verificarArquivo() {
         sudo mkdir ~/.atualizar/imgs
         
         sudo wget -P ~/.atualizar/imgs https://i.imgur.com/z9hRO68.png
-        sudo mv z9hRO68.png atualizarLogo64.png
+        sudo mv ~/.atualizar/imgs/z9hRO68.png ~/.atualizar/imgs/atualizarLogo64.png
         
         clear
         echo -e " \e[34;1mInstalação completa. \e[1;37m"
@@ -170,7 +170,8 @@ function verificarArquivo() {
             echo -e "\n\e[34;0mVersão da distribuição: \e[1;37m"
             sudo cat /etc/issue.net
             echo -e "\n\e[34;0mPacotes atualizados:\n\e[1;37m$numeroPacotes"
-            echo -e "\n\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a\n"
+            echo -e "\n\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a"
+            echo -e "\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
         }
                
         # Adicionar temporizador para leitura do usuário de f7.
@@ -342,27 +343,44 @@ function verificarArquivo() {
             fi
         }
 
-        # Chamada de modo "Simples".
-        if [ "$parametroExec" = "[S]" ]
+        ipConexaoTeste="8.8.8.8"
+
+
+        if ping -q -c 1 -W 1 $ipConexaoTeste >/dev/null;
         then
-            f1 $parametroExec
-            f2 $parametroExec
-            f3 $parametroExec
-            f9 $parametroExec
-        # Chamada de modo "Padrão".
+            # Chamada de modo "Simples".
+            if [ "$parametroExec" = "[S]" ]
+            then
+                f1 $parametroExec
+                f2 $parametroExec
+                f3 $parametroExec
+                f9 $parametroExec
+            # Chamada de modo "Padrão".
+            else
+                menuVerificacao
+                f1
+                f2
+                f3
+                f4
+                f5
+                f6
+                f7
+                f8
+                f9
+                sys_reboot
+            fi
         else
-            menuVerificacao
-            f1
-            f2
-            f3
-            f4
-            f5
-            f6
-            f7
-            f8
-            f9
-            sys_reboot
+            apresentarErroConexao
         fi
+    }
+
+    function apresentarErroConexao() {
+        clear
+        echo -e " \e[34;1mSem conexão com a Internet\e[1;37m\n"
+        echo -e " Tente:"
+        echo -e "   Verificar os cabos de rede, modem e roteador."
+        echo -e "   Conectar à rede Wi-Fi novamente."
+        echo -e "   Entrar em contato com o suporte do seu provedor de Internet.\n"
     }
 
     function desinstalar() {
@@ -403,8 +421,8 @@ function verificarArquivo() {
         echo -e "-r, --reescrever, --rewrite         [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL, HÁ UM PEDIDO DE CONFIRMAÇÃO]"
         echo -e "-R                                  [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n"
         echo -e "-v, --versao, --version             [USE PARA APRESENTAR A VERSÃO ATUAL]\n\n"
-        echo -e '\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a'
-        echo -e '\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n'
+        echo -e "\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a"
+        echo -e "\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
     }
 
     # Função de execução simples (f1, f2, f3 e f7). 
@@ -421,23 +439,28 @@ function verificarArquivo() {
             mostrarVersao
         }
         parametroS=$1
-        # Execução direta / Com confirmação.
-        if [ "$parametroS" = "-S" ];
+        if ping -q -c 1 -W 1 $ipConexaoTeste >/dev/null;
         then
-            atualizarArquivoComandos
-        else
-            valorReescrita=0
-            while [ "$valorReescrita" != "S" -a "$valorReescrita" != "s" -a "$valorReescrita" != "N" -a "$valorReescrita" != "n" ]; do
-                clear
-                echo -e " \e[34;1mVocê realmente deseja reescrever o arquivo para a versão mais atual? (S/N) \e[1;37m"
-                read -n1 valorReescrita
-            done
-            if [ "$valorReescrita" = "S" -o "$valorReescrita" = "s" ]; then
+            # Execução direta / Com confirmação.
+            if [ "$parametroS" = "-S" ];
+            then
                 atualizarArquivoComandos
             else
-                clear
-                echo -e " \e[34;1mOperação cancelada \e[1;37m"
+                valorReescrita=0
+                while [ "$valorReescrita" != "S" -a "$valorReescrita" != "s" -a "$valorReescrita" != "N" -a "$valorReescrita" != "n" ]; do
+                    clear
+                    echo -e " \e[34;1mVocê realmente deseja reescrever o arquivo para a versão mais atual? (S/N) \e[1;37m"
+                    read -n1 valorReescrita
+                done
+                if [ "$valorReescrita" = "S" -o "$valorReescrita" = "s" ]; then
+                    atualizarArquivoComandos
+                else
+                    clear
+                    echo -e " \e[34;1mOperação cancelada \e[1;37m"
+                fi
             fi
+        else
+            apresentarErroConexao
         fi
     }
 

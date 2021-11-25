@@ -15,7 +15,7 @@
 
  Use para desinstalar:
  `-d`, `--desinstalar`, `-u` ou `--uninstall`
- (use -D para desinstalar sem uma confirmação).
+ (use `-D` para desinstalar sem uma confirmação).
 
  Exemplo:
 > atualizar --desinstalar
@@ -28,7 +28,7 @@
 
  Use para baixar e instalar a última versão do arquivo disponível:
  `-r`, `--reescrever` ou `--rewrite`
- (use -R para reescrever sem uma confirmação).
+ (use `-R` para reescrever sem uma confirmação).
 
  Exemplo:
 > atualizar --reescrever
