@@ -6,6 +6,8 @@
  Para utilizar o programa execute o comando:
 >atualizar
 
+Ou execute o aplicativo "atualizar" na sua lista de aplicativos.
+
 ### Parâmetros
  Use para apresentar os parâmetros de entrada e o link do projeto (GitHub):
  `-a`, `--ajuda`, `-h` ou `--help`

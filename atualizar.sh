@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="1.3.6"
+versao="1.3.8"
 
 #Verificando arquivo script.
 function verificarArquivo() {
@@ -16,11 +16,21 @@ function verificarArquivo() {
         # Diretório de logs.
         sudo mkdir ~/.atualizar
         sudo mkdir ~/.atualizar/logs
-        sudo mkdir ~/.atualizar/imgs
+        sudo mkdir ~/.atualizar/imagens
         
-        sudo wget -P ~/.atualizar/imgs https://i.imgur.com/z9hRO68.png
-        sudo mv ~/.atualizar/imgs/z9hRO68.png ~/.atualizar/imgs/atualizarLogo64.png
-        
+        sudo wget -P ~/.atualizar/imagens https://i.imgur.com/sDdxIJ9.png
+        sudo mv ~/.atualizar/imagens/sDdxIJ9.png ~/.atualizar/imagens/atualizar.png
+
+        sudo echo -e "[Desktop Entry]
+Name=atualizar
+Type=Application
+Comment=Script para atualização completa do sistema Linux, de modo simples e fácil.
+Categories=Utility,System,Settings
+Exec=atualizar
+Terminal=true
+Version=$versao
+Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applications/atualizar.desktop
+
         clear
         echo -e " \e[34;1mInstalação completa. \e[1;37m"
     }
@@ -155,11 +165,11 @@ function verificarArquivo() {
             if [ "$parametroF7" = "[S]" ];
             then
                 criarLog $parametroF7
-                notify-send -i ~/.atualizar/imgs/atualizarLogo64.png "atualizar (Simples)" "Atualização concluída com sucesso."
+                notify-send -i ~/.atualizar/imagens/atualizar.png "atualizar (Simples)" "Atualização concluída com sucesso."
                 echo -e "\e[34;1m(4/4)Atualização conclúida com sucesso. \e[1;37m"
             else
                 criarLog
-                notify-send -i ~/.atualizar/imgs/atualizarLogo64.png "atualizar (Padrão)" "Atualização concluída com sucesso."
+                notify-send -i ~/.atualizar/imagens/atualizar.png "atualizar (Padrão)" "Atualização concluída com sucesso."
                 echo -e "\e[34;1m(9/9)Atualização conclúida com sucesso. \e[1;37m"
             fi
 
@@ -170,6 +180,7 @@ function verificarArquivo() {
             echo -e "\n\e[34;0mVersão da distribuição: \e[1;37m"
             sudo cat /etc/issue.net
             echo -e "\n\e[34;0mPacotes atualizados:\n\e[1;37m$numeroPacotes"
+
             echo -e "\n\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a"
             echo -e "\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
         }
@@ -343,10 +354,7 @@ function verificarArquivo() {
             fi
         }
 
-        ipConexaoTeste="8.8.8.8"
-
-
-        if ping -q -c 1 -W 1 $ipConexaoTeste >/dev/null;
+        if ping -q -c 1 -W 1 8.8.8.8 >/dev/null;
         then
             # Chamada de modo "Simples".
             if [ "$parametroExec" = "[S]" ]
@@ -376,11 +384,11 @@ function verificarArquivo() {
 
     function apresentarErroConexao() {
         clear
-        echo -e " \e[34;1mSem conexão com a Internet\e[1;37m\n"
-        echo -e " Tente:"
-        echo -e "   Verificar os cabos de rede, modem e roteador."
-        echo -e "   Conectar à rede Wi-Fi novamente."
-        echo -e "   Entrar em contato com o suporte do seu provedor de Internet.\n"
+        echo -e " \e[34;1mSem conexão com a Internet\e[1;37m\n
+ Tente:
+   Verificar os cabos de rede, modem e roteador.
+   Conectar à rede Wi-Fi novamente.
+   Entrar em contato com o suporte do seu provedor de Internet.\n"
     }
 
     function desinstalar() {
@@ -413,16 +421,16 @@ function verificarArquivo() {
 
     function ajuda() {
         clear
-        echo -e " \e[34;1mComandos: \e[1;37m\n"
-        echo -e "-a, --ajuda, -h, --help             [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA, O LINK DO PROJETO E O LINK DE FEEDBACK]\n"
-        echo -e "-d, --desinstalar, -u, --uninstall  [USE PARA DESINSTALAR, HÁ UM PEDIDO DE CONFIRMAÇÃO]"
-        echo -e "-D                                  [USE PARA DESINSTALAR]\n"
-        echo -e "-s, --simples, --simple             [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n"
-        echo -e "-r, --reescrever, --rewrite         [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL, HÁ UM PEDIDO DE CONFIRMAÇÃO]"
-        echo -e "-R                                  [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n"
-        echo -e "-v, --versao, --version             [USE PARA APRESENTAR A VERSÃO ATUAL]\n\n"
-        echo -e "\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a"
-        echo -e "\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
+        echo -e " \e[34;1mComandos: \e[1;37m\n
+ -a, --ajuda, -h, --help             [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA, O LINK DO PROJETO E O LINK DE FEEDBACK]\n
+ -d, --desinstalar, -u, --uninstall  [USE PARA DESINSTALAR, HÁ UM PEDIDO DE CONFIRMAÇÃO]
+ -D                                  [USE PARA DESINSTALAR]\n
+ -s, --simples, --simple             [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n
+ -r, --reescrever, --rewrite         [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL, HÁ UM PEDIDO DE CONFIRMAÇÃO]
+ -R                                  [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n
+ -v, --versao, --version             [USE PARA APRESENTAR A VERSÃO ATUAL]\n
+ \e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a
+ \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
     }
 
     # Função de execução simples (f1, f2, f3 e f7). 
@@ -439,7 +447,7 @@ function verificarArquivo() {
             mostrarVersao
         }
         parametroS=$1
-        if ping -q -c 1 -W 1 $ipConexaoTeste >/dev/null;
+        if ping -q -c 1 -W 1 8.8.8.8 >/dev/null;
         then
             # Execução direta / Com confirmação.
             if [ "$parametroS" = "-S" ];
