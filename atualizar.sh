@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="1.3.8"
+versao="22.09"
 
 #Verificando arquivo script.
 function verificarArquivo() {
@@ -181,6 +181,27 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             sudo cat /etc/issue.net
             echo -e "\n\e[34;0mPacotes atualizados:\n\e[1;37m$numeroPacotes"
 
+            mostrarApps=false
+            for i in ${!vetorValor[*]};
+            do
+                if [ ${vetorValor[i]} == true ];
+                then
+                    mostrarApps=true
+                fi
+            done
+
+            if $mostrarApps;
+            then
+                echo -e "\n\e[34;0mAplicativos instalados: \e[1;37m"
+                for i in ${!vetorValor[*]};
+                do
+                    if [ ${vetorValor[i]} == true ] && [ ${vetorNome[i]} != "(vazio)" ];
+                    then
+                        echo -e "\e[1;37m${vetorNome[i]}\e[1;37m"
+                    fi
+                done
+            fi
+
             echo -e "\n\e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a"
             echo -e "\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
         }
@@ -237,13 +258,25 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             valorRecebido="0" 	#Valor de entrada do usuário.
             nPagina=1 	  		#Paginamento de Apps.
             nMaxPagina=3        #Numero Maximo de paginas.
-            
-            vetorNome=("Spotify" "Discord" "Telegram Desktop" "Slack" "Draw.io" "Visual Studio Code (Classic)" "Visual Studio Code Insiders (Classic)" "Apache NetBeans" "Android Studio" "InkScape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
-            vetorComando=("spotify" "discord" "telegram-desktop" "slack --classic" "drawio" "code --classic" "(code-insiders --classic)" "netbeans --classic" "android-studio --classic" "inkscape" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
+
+            # Spotify ➜            https://dl.flathub.org/repo/appstream/com.spotify.Client.flatpakref
+            # Discord ➜            https://dl.flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
+            # Telegram Desktop ➜   https://dl.flathub.org/repo/appstream/org.telegram.desktop.flatpakref
+            # Slack ➜              https://dl.flathub.org/repo/appstream/com.slack.Slack.flatpakref
+            # Draw.io ➜            https://dl.flathub.org/repo/appstream/com.jgraph.drawio.desktop.flatpakref
+            # Visual Studio Code ➜ https://dl.flathub.org/repo/appstream/com.visualstudio.code.flatpakref
+            # GitKracken ➜         https://dl.flathub.org/repo/appstream/com.axosoft.GitKraken.flatpakref
+            # AnyDesk ➜            https://dl.flathub.org/repo/appstream/com.anydesk.Anydesk.flatpakref
+            # AuthPass ➜           https://dl.flathub.org/repo/appstream/app.authpass.AuthPass.flatpakref
+            # Google Chrome ➜      https://dl.flathub.org/repo/appstream/com.google.Chrome.flatpakref
+
+            vetorNome=("Spotify" "Discord" "Telegram Desktop" "Slack" "Draw.io" "Visual Studio Code" "GitKraken" "AnyDesk" "AuthPass" "Google Chrome" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
+            vetorComando=("https://dl.flathub.org/repo/appstream/com.spotify.Client.flatpakref" "https://dl.flathub.org/repo/appstream/com.discordapp.Discord.flatpakref" "https://dl.flathub.org/repo/appstream/org.telegram.desktop.flatpakref" "https://dl.flathub.org/repo/appstream/com.slack.Slack.flatpakref" "https://dl.flathub.org/repo/appstream/com.jgraph.drawio.desktop.flatpakref" "https://dl.flathub.org/repo/appstream/com.visualstudio.code.flatpakref" "https://dl.flathub.org/repo/appstream/com.axosoft.GitKraken.flatpakref" "https://dl.flathub.org/repo/appstream/com.anydesk.Anydesk.flatpakref" "https://dl.flathub.org/repo/appstream/app.authpass.AuthPass.flatpakref" "https://dl.flathub.org/repo/appstream/com.google.Chrome.flatpakref" "(vazio)" "(vazio)" "(vazio)" "(vazio)" "(vazio)")
             vetorValor=( false false false false false false false false false false false false false false false )
             
+
             # Verificação de instalar/não instalar (Switch true-false).
-            function switchValorApp() {
+            function mudarValorInstalar() {
                 
                 valorRecebido=$(( ($nPagina - 1) * 5 + ($valorRecebido - 1) ))
                 echo $valorRecebido
@@ -258,23 +291,18 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             
             # Definição de comandos para instalação de aplicativos Snapcraft.
             function instalarApps() {
-                # Remoção de arquivo de restrição (para execução em Mint).
-                valorRetorno=`ls /etc/apt/preferences.d/nosnap.pref`
-                if [ "$valorRetorno" = "/etc/apt/preferences.d/nosnap.pref" ];
-                then
-                    sudo rm /etc/apt/preferences.d/nosnap.pref
-                fi
-                sudo apt install snapd
+                sudo apt install flatpak -y
+                sudo apt install gnome-software-plugin-flatpak -y
                 for i in ${!vetorValor[*]};
                 do
-                    if [ ${vetorValor[i]} == true ];
+                    if [ ${vetorValor[i]} == true ] && [ ${vetorNome[i]} != "(vazio)" ];
                     then
                         clear
                         echo -e " \e[1;37mInstalando ${vetorNome[i]}...\e[1;37m\n"
-                        sudo snap install ${vetorComando[i]}
+                        sudo flatpak install ${vetorComando[i]} -y
                     fi
                 done
-                sudo snap refresh
+                sudo flatpak update -y
             }
             
             # Paginação de menu de Apps.
@@ -335,7 +363,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 
                 if [ "$valorRecebido" != "S" -a "$valorRecebido" != "s" ];then
                     if [ "$valorRecebido" -ge 1 -a "$valorRecebido" -le 5 ];then
-                        switchValorApp
+                        mudarValorInstalar
                     fi
                 fi   
             done
@@ -390,7 +418,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
    Conectar à rede Wi-Fi novamente.
    Entrar em contato com o suporte do seu provedor de Internet.\n"
     }
-
+    # Função de desinstalar programa e logs.
     function desinstalar() {
         function desinstalarComandos() {
             clear
@@ -419,16 +447,19 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         fi
     }
 
+    
+
+    # Função de apresentar parâmetros de entrada.
     function ajuda() {
         clear
         echo -e " \e[34;1mComandos: \e[1;37m\n
- -a, --ajuda, -h, --help             [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA, O LINK DO PROJETO E O LINK DE FEEDBACK]\n
- -d, --desinstalar, -u, --uninstall  [USE PARA DESINSTALAR, HÁ UM PEDIDO DE CONFIRMAÇÃO]
- -D                                  [USE PARA DESINSTALAR]\n
- -s, --simples, --simple             [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n
- -r, --reescrever, --rewrite         [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL, HÁ UM PEDIDO DE CONFIRMAÇÃO]
- -R                                  [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n
- -v, --versao, --version             [USE PARA APRESENTAR A VERSÃO ATUAL]\n
+ -a, --ajuda           [USE PARA APRESENTAR OS PARÂMETROS DE ENTRADA, O LINK DO PROJETO E O LINK DE FEEDBACK]\n
+ -d, --desinstalar     [USE PARA DESINSTALAR, HÁ UM PEDIDO DE CONFIRMAÇÃO]
+ -D                    [USE PARA DESINSTALAR]\n
+ -s, --simples         [USE PARA EXECUTAR SOMENTE FUNÇÕES SIMPLES DE ATUALIZAÇÃO DE DIRETÓRIOS, KERNEL E DISTRIBUIÇÃO]\n
+ -r, --reescrever      [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL, HÁ UM PEDIDO DE CONFIRMAÇÃO]
+ -R                    [USE PARA BAIXAR E INSTALAR A ÚLTIMA VERSÃO DO ARQUIVO DISPONÍVEL]\n
+ -v, --versao          [USE PARA APRESENTAR A VERSÃO ATUAL]\n
  \e]8;;https://github.com/bill1300/atualizar\aProjeto atualizar (GitHub)\e]8;;\a
  \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
     }
@@ -438,6 +469,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         simples="[S]"
         execAtualizar $simples
     }
+
     # Função de reescrita de arquivo usando o arquivo "raw" no GitHub.
     function atualizarArquivo() {
         function atualizarArquivoComandos() {
@@ -472,6 +504,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         fi
     }
 
+    # Função de apresentar versão.
     function mostrarVersao() {
          echo -e "O atualizar está na versão: \033[1m$versao\033[0m"
     }
@@ -485,29 +518,29 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         if [ -n "$parametro" ];
         then
             case $parametro in
-            -d | --desinstalar | -u | --uninstall)
+            -d | --desinstalar)
                 desinstalar
             ;;
             -D)
                 desinstalar -S
             ;;
-            -a | --ajuda | -h | --help)
+            -a | --ajuda)
                 ajuda
             ;;
-            -s | --simples | --simple)
+            -s | --simples)
                 simples
             ;;
-            -r | --reescrever | --rewrite)
+            -r | --reescrever)
                 atualizarArquivo
             ;;
             -R)
                 atualizarArquivo -S
             ;;
-            -v | --versao | --version)
+            -v | --versao)
                 mostrarVersao
             ;;
             *)
-                echo -e "Parâmetro desconhecido, tente: \033[1matualizar --help\033[0m para ver os parâmetros disponíveis."
+                echo -e "Parâmetro desconhecido, tente: \033[1matualizar --ajuda\033[0m para ver os parâmetros disponíveis."
             ;;
             esac
         else
