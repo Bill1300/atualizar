@@ -54,10 +54,10 @@ Aplicativo  | Link de instalação
 [Slack ➜](https://slack.com/) | https://dl.flathub.org/repo/appstream/com.slack.Slack.flatpakref
 [Draw.io ➜](https://www.diagrams.net) | https://dl.flathub.org/repo/appstream/com.jgraph.drawio.desktop.flatpakref
 [Visual Studio Code ➜](https://code.visualstudio.com/) | https://dl.flathub.org/repo/appstream/com.visualstudio.code.flatpakref
-[GitKracken ➜](https://code.visualstudio.com/insiders/) | https://dl.flathub.org/repo/appstream/com.axosoft.GitKraken.flatpakref
-[AnyDesk ➜](https://netbeans.apache.org) | https://dl.flathub.org/repo/appstream/com.anydesk.Anydesk.flatpakref
-[AuthPass ➜](https://developer.android.com/studio) | https://dl.flathub.org/repo/appstream/app.authpass.AuthPass.flatpakref
-[Google Chrome ➜](https://inkscape.org/pt-br/) | https://dl.flathub.org/repo/appstream/com.google.Chrome.flatpakref
+[GitKracken ➜](https://www.gitkraken.com) | https://dl.flathub.org/repo/appstream/com.axosoft.GitKraken.flatpakref
+[AnyDesk ➜](https://anydesk.com/pt) | https://dl.flathub.org/repo/appstream/com.anydesk.Anydesk.flatpakref
+[AuthPass ➜](https://authpass.app) | https://dl.flathub.org/repo/appstream/app.authpass.AuthPass.flatpakref
+[Google Chrome ➜](https://www.google.com/intl/pt-BR/chrome/) | https://dl.flathub.org/repo/appstream/com.google.Chrome.flatpakref
 
 ### Funções
 Descrição | Comando | Modo
