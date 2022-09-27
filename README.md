@@ -1,5 +1,9 @@
 Versão: 22.09
 
+<div align="center">
+  <img width="128" height="128" src="https://user-images.githubusercontent.com/42590905/192646234-96f838eb-a651-40fb-b8ef-c528b6aa7bc3.png">
+</div>
+
 ### Instalação
  Para instalar o programa execute o comando:
 >bash atualizar.sh
@@ -11,42 +15,42 @@ Versão: 22.09
 Ou execute o aplicativo "atualizar" na sua lista de aplicativos.
 
 ### Parâmetros
-#####Ajuda ➜
+#### Ajuda ➜
  Use para apresentar os parâmetros de entrada e o link do projeto (GitHub):
  `-a` ou `--ajuda`
 
  Exemplo:
 > atualizar --ajuda
 
-#####Desinstalar ➜
+#### Desinstalar ➜
  Use para desinstalar:
  `-d` ou `--desinstalar` (use `-D` para desinstalar sem uma confirmação).
 
  Exemplo:
 > atualizar --desinstalar
 
-#####Modo "Simples" ➜
+#### Modo "Simples" ➜
  Use para executar somente funções simples de atualização de diretórios, kernel e distribuição:
  `-s`, `--simples`
 
  Exemplo:
 > atualizar --simples
 
-#####Reescrever ➜
+#### Reescrever ➜
  Use para baixar e instalar a última versão do arquivo disponível:
  `-r` ou `--reescrever` (use `-R` para reescrever sem uma confirmação).
 
  Exemplo:
 > atualizar --reescrever
 
-#####Mostrar versão ➜
+#### Mostrar versão ➜
  Use para apresentar a versão atual:
  `-v` ou `--versao`
 
  Exemplo:
 > atualizar --versao
 
-#####Mudar idioma ➜
+#### Mudar idioma ➜
  Use para mudar o idioma:
  `-i` ou `--idioma`, seguido da sigla do idioma selecionado. (Por padrão é selecionado **Português do Brasil**).
 
