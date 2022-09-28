@@ -55,7 +55,7 @@ Ou execute o aplicativo "atualizar" na sua lista de aplicativos.
  `-i` ou `--idioma`, seguido da sigla do idioma selecionado. (Por padrão é selecionado **Português do Brasil**).
 
  Exemplo:
-> atualizar --versao pt-br
+> atualizar --idioma pt-br
 
 Idioma  | Sigla
 ------------- | -------------
