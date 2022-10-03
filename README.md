@@ -1,4 +1,4 @@
-Versão: 22.09
+Versão: 22.10
 
 <div align="center">
   <img width="128" height="128" src="https://user-images.githubusercontent.com/42590905/192646234-96f838eb-a651-40fb-b8ef-c528b6aa7bc3.png">
