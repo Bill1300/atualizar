@@ -296,7 +296,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             if $mostrarApps; then
                 echo -e "\n${_bld}$infoApps ${_nml}"
                 for i in ${!vetorValor[*]}; do
-                    if [ ${vetorValor[i]} == true ] && [ ${vetorNome[i]} != "(vazio)" ]; then
+                    if [ ${vetorValor[i]} == true ] && [ "${vetorNome[i]}" != "(vazio)" ]; then
                         echo -e "${vetorNome[i]}"
                     fi
                 done
