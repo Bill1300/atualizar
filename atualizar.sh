@@ -1,6 +1,12 @@
 #!/bin/bash
 versao="22.09"
-idioma="pt-br" # "pt-br" ou "en-us"
+idioma="pt-br"
+
+_alt="\e[1;41m"     #Alerta
+_ttl=" \e[34;1m"    #Titulo
+_bld="\033[1m"      #Bold
+_nml="\033[0m"      #Normal
+_lnk="\e]8;;"       #Link
 
 #Verificando arquivo script.
 function verificarArquivo() {
@@ -18,6 +24,8 @@ function verificarArquivo() {
         sudo mkdir ~/.atualizar
         sudo mkdir ~/.atualizar/logs
         sudo mkdir ~/.atualizar/imagens
+        sudo touch ~/.atualizar/dados.config
+        echo -e "idioma=\"pt-br\"\n" | sudo tee ~/.atualizar/dados.config
 
         sudo wget -P ~/.atualizar/imagens https://i.imgur.com/sDdxIJ9.png
         sudo mv ~/.atualizar/imagens/sDdxIJ9.png ~/.atualizar/imagens/atualizar.png
@@ -33,7 +41,7 @@ Version=$versao
 Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applications/atualizar.desktop
 
         clear
-        echo -e " \e[34;1mInstalação completa. \e[1;37m"
+        echo -e "${_ttl}Instalação completa.${_nml}"
     }
 
     function execAtualizar() {
@@ -50,6 +58,12 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
 
         # Criar Log com infomações da execução.
         function criarLog() {
+            
+            criarHistorico() {
+                versaoDistro=$(cat /etc/issue.net)
+                linha="$hora     $data     $versaoDistro     $numeroPacotes"
+                sudo sed -i "2i $linha" ~/.atualizar/dados.config
+            }
 
             parametroLog=$1
             usuarioTexto=$(whoami)
@@ -60,6 +74,8 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             dataLog=$(date '+%d-%m-%Y_%H-%M-%S')
 
             dataTexto="$data $hora"
+
+            criarHistorico
 
             if [ "$idioma" = "pt-br" ]; then
                 dataLog=$(date '+%d-%m-%Y_%H-%M-%S')
@@ -118,9 +134,9 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             parametroF1=$1
             clear
             if [ "$parametroF1" = "paramS" ]; then
-                echo -e "\n \e[34;1m(1/4) $frase ➜ \e[1;37m\n"
+                echo -e "${_ttl}(1/4) $frase ➜ ${_nml}\n"
             else
-                echo -e "\n \e[34;1m(1/9) $frase ➜ \e[1;37m\n"
+                echo -e "${_ttl}(1/9) $frase ➜ ${_nml}\n"
             fi
             sudo apt update -y
         }
@@ -136,9 +152,9 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             parametroF2=$1
             clear
             if [ "$parametroF2" = "paramS" ]; then
-                echo -e "\n \e[34;1m(2/4) $frase ➜ \e[1;37m\n"
+                echo -e "${_ttl}(2/4) $frase ➜ ${_nml}\n"
             else
-                echo -e "\n \e[34;1m(2/9) $frase ➜ \e[1;37m\n"
+                echo -e "${_ttl}(2/9) $frase ➜ ${_nml}\n"
             fi
             sudo apt upgrade -y
         }
@@ -154,9 +170,9 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             parametroF3=$1
             clear
             if [ "$parametroF3" = "paramS" ]; then
-                echo -e "\n \e[34;1m(3/4) $frase ➜ \e[1;37m\n"
+                echo -e "${_ttl}(3/4) $frase ➜ ${_nml}\n"
             else
-                echo -e "\n \e[34;1m(3/9) $frase ➜ \e[1;37m\n"
+                echo -e "${_ttl}(3/9) $frase ➜ ${_nml}\n"
             fi
             sudo apt dist-upgrade -y
         }
@@ -170,7 +186,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Updating Grub"
             fi
             clear
-            echo -e "\n \e[34;1m(4/9) $frase ➜ \e[1;37m\n"
+            echo -e "${_ttl}(4/9) $frase ➜ ${_nml}\n"
             sudo update-grub -y
         }
 
@@ -183,7 +199,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Fixing corrupted packages"
             fi
             clear
-            echo -e "\n \e[34;1m(5/9) $frase ➜ \e[1;37m\n"
+            echo -e "${_ttl}(5/9) $frase ➜ ${_nml}\n"
             sudo apt install -f
         }
 
@@ -196,7 +212,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Removing unnecessary files for the System used in the update"
             fi
             clear
-            echo -e "\n \e[34;1m(6/9) $frase ➜ \e[1;37m\n"
+            echo -e "${_ttl}(6/9) $frase ➜ ${_nml}\n"
             sudo apt autoclean -y
         }
 
@@ -209,7 +225,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Removing unnecessary files from the local repository for the System"
             fi
             clear
-            echo -e "\n \e[34;1m(7/9) $frase ➜ \e[1;37m\n"
+            echo -e "${_ttl}(7/9) $frase ➜ ${_nml}\n"
             sudo apt autoremove -y
         }
 
@@ -222,7 +238,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Removing files from /var/cache/apt/archives/ and /var/cache/apt/archives/partial/"
             fi
             clear
-            echo -e "\n \e[34;1m(8/9) $frase ➜ \e[1;37m\n"
+            echo -e "${_ttl}(8/9) $frase ➜ ${_nml}\n"
             sudo apt clean -y
         }
 
@@ -255,20 +271,20 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             if [ "$parametroF7" = "paramS" ]; then
                 criarLog $parametroF7
                 notify-send -i ~/.atualizar/imagens/atualizar.png "$notificacaoSimples" "$frase ➜"
-                echo -e "\e[34;1m(4/4) $frase ➜ \e[1;37m"
+                echo -e "${_ttl}(4/4) $frase ➜ ${_nml}"
             else
                 criarLog
                 notify-send -i ~/.atualizar/imagens/atualizar.png "$notificacaoPadrao" "$frase ➜"
-                echo -e "\e[34;1m(9/9) $frase ➜ \e[1;37m"
+                echo -e "${_ttl}(9/9) $frase ➜ ${_nml}"
             fi
 
-            echo -e "\n\e[34;0m$info1 \e[1;37m"
+            echo -e "\n${_bld}$info1 ${_nml}"
             sudo uname -o
-            echo -e "\n\e[34;0m$info2 \e[1;37m"
+            echo -e "\n${_bld}$info2 ${_nml}"
             sudo uname -r
-            echo -e "\n\e[34;0m$info3 \e[1;37m"
+            echo -e "\n${_bld}$info3 ${_nml}"
             sudo cat /etc/issue.net
-            echo -e "\n\e[34;0m$info4\n\e[1;37m$numeroPacotes"
+            echo -e "\n${_bld}$info4\n${_nml}$numeroPacotes"
 
             mostrarApps=false
             for i in ${!vetorValor[*]}; do
@@ -278,16 +294,16 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             done
 
             if $mostrarApps; then
-                echo -e "\n\e[34;0m$infoApps \e[1;37m"
+                echo -e "\n${_bld}$infoApps ${_nml}"
                 for i in ${!vetorValor[*]}; do
                     if [ ${vetorValor[i]} == true ] && [ ${vetorNome[i]} != "(vazio)" ]; then
-                        echo -e "\e[1;37m${vetorNome[i]}\e[1;37m"
+                        echo -e "${vetorNome[i]}"
                     fi
                 done
             fi
 
-            echo -e "\n\e]8;;https://github.com/bill1300/atualizar\a$infoLink (GitHub)\e]8;;\a"
-            echo -e "\e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
+            echo -e "\n${_lnk}https://github.com/bill1300/atualizar\a$infoLink (GitHub)${_lnk}\a"
+            echo -e "${_lnk}https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)${_lnk}\a"
         }
 
         # Adicionar temporizador para leitura do usuário de f7.
@@ -304,9 +320,9 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             fi
             if [ "$valorReiniciar" = "S" -o "$valorReiniciar" = "s" ]; then
 
-                echo -e "\n\e[1;41m$alerta"
-                echo -e "\n\e[1;41mS - $info1"
-                echo -e "\e[1;41mN - $info2\e[0m"
+                echo -e "\n${_alt}$alerta"
+                echo -e "\n${_alt}S - $info1"
+                echo -e "${_alt}N - $info2\e[0m"
 
                 valorR=""
                 tempoInicial=$(date +%s)
@@ -339,13 +355,13 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             fi
             while [ "$valorReiniciar" != "S" -a "$valorReiniciar" != "s" -a "$valorReiniciar" != "N" -a "$valorReiniciar" != "n" ]; do
                 clear
-                echo -e " \e[1;41m $info1 (S/N) \e[0m"
+                echo -e "${_alt}$info1 (S/N) ${_nml}"
                 read -n1 valorReiniciar
             done
 
             while [ "$valorInstalarApps" != "S" -a "$valorInstalarApps" != "s" -a "$valorInstalarApps" != "N" -a "$valorInstalarApps" != "n" ]; do
                 clear
-                echo -e " \e[34;1m $info2 (S/N) \e[1;37m"
+                echo -e "${_ttl} $info2 (S/N) ${_nml}"
                 read -n1 valorInstalarApps
             done
 
@@ -401,7 +417,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 for i in ${!vetorValor[*]}; do
                     if [ ${vetorValor[i]} == true ] && [ ${vetorNome[i]} != "(vazio)" ]; then
                         clear
-                        echo -e " \e[1;37m$frase ${vetorNome[i]}...\e[1;37m\n"
+                        echo -e "${_bld}$frase ${vetorNome[i]} ➜ ${_nml}\n"
                         sudo flatpak install ${vetorComando[i]} -y
                     fi
                 done
@@ -413,9 +429,9 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
 
                 function imprimirTela() {
                     if [ ${vetorValor[i]} == true ]; then
-                        echo -e " \e[34;1m(OK)  $indiceCatalogo - ${vetorNome[i]}\e[1;37m"
+                        echo -e "${_ttl}(OK)  $indiceCatalogo - ${vetorNome[i]} ${_nml}"
                     else
-                        echo -e " \e[34;1m(  )  $indiceCatalogo - ${vetorNome[i]}\e[1;37m"
+                        echo -e "${_ttl}(  )  $indiceCatalogo - ${vetorNome[i]} ${_nml}"
                     fi
                     indiceCatalogo=$((indiceCatalogo + 1))
                 }
@@ -520,14 +536,14 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         clear
 
         if [ "$idioma" = "pt-br" ]; then
-            echo -e " \e[34;1mSem conexão com a Internet ➜ \e[1;37m\n
+            echo -e "${_ttl}Sem conexão com a Internet ➜ ${_nml}\n
  Tente:
    Verificar os cabos de rede, modem e roteador.
    Conectar à rede Wi-Fi novamente.
    Entrar em contato com o suporte do seu provedor de Internet.\n"
         fi
         if [ "$idioma" = "en-us" ]; then
-            echo -e " \e[34;1mNo Internet ➜ \e[1;37m\n
+            echo -e "${_ttl}No Internet ➜ ${_nml}\n
  Try:
    Checking the network cables, modem and router.
    Reconnecting to Wi-Fi.
@@ -548,7 +564,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         fi
         function desinstalarComandos() {
             clear
-            echo -e " \e[34;1m$info3 \e[1;37m"
+            echo -e "${_ttl}$info3. ${_nml}"
             sudo rm -r ~/.atualizar 2>/dev/null
             sudo rm -f /bin/atualizar
         }
@@ -560,14 +576,14 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             valorDesinstalar=0
             while [ "$valorDesinstalar" != "S" -a "$valorDesinstalar" != "s" -a "$valorDesinstalar" != "N" -a "$valorDesinstalar" != "n" ]; do
                 clear
-                echo -e " \e[1;41m $info1 (S/N) \e[0m"
+                echo -e " ${_alt}$info1 (S/N) \e[0m"
                 read -n1 valorDesinstalar
             done
             if [ "$valorDesinstalar" = "S" -o "$valorDesinstalar" = "s" ]; then
                 desinstalarComandos
             else
                 clear
-                echo -e " \e[34;1m$info2 \e[1;37m"
+                echo -e "${_ttl}$info2 ${_nml}"
             fi
         fi
     }
@@ -576,26 +592,34 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
     function ajuda() {
         clear
         if [ "$idioma" = "pt-br" ]; then
-            echo -e " \e[34;1mComandos: \e[1;37m\n
- \033[1m-a\033[0m ou \033[1m--ajuda\033[0m ➜         Use para apresentar os parâmetros de entrada e outras informações.\n
- \033[1m-d\033[0m ou \033[1m--desinstalar\033[0m ➜   Use para desinstalar, há uma mensagem para confirmação.
- \033[1m-D\033[0m ➜                    Use para desinstalar.\n
- \033[1m-s\033[0m ou \033[1m--simples\033[0m ➜       Use para executar somente funções simples de atualização de diretórios, kernel e distribuição.\n
- \033[1m-r\033[0m ou \033[1m--reescrever\033[0m ➜    Use para baixar e instalar a última versão do arquivo disponível, há um pedido de confirmação.
- \033[1m-R\033[0m ➜                    Use para baixar E instalar a última versão do arquivo disponível.\n
- \033[1m-v\033[0m ou \033[1m--versao\033[0m ➜        Use para apresentar a versão atual.\n
+            echo -e "${_ttl}Comandos: ${_nml}\n
+ ${_bld}-a${_nml} ou ${_bld}--ajuda${_nml} ➜         Use para apresentar os parâmetros de entrada e outras informações.\n
+ ${_bld}-d${_nml} ou ${_bld}--desinstalar${_nml} ➜   Use para desinstalar, há uma mensagem para confirmação.
+ ${_bld}-D${_nml} ➜                    Use para desinstalar.\n
+ ${_bld}-s${_nml} ou ${_bld}--simples${_nml} ➜       Use para executar somente funções simples de atualização de diretórios, kernel e distribuição.\n
+ ${_bld}-r${_nml} ou ${_bld}--reescrever${_nml} ➜    Use para baixar e instalar a última versão do arquivo disponível, há um pedido de confirmação.
+ ${_bld}-R${_nml} ➜                    Use para baixar E instalar a última versão do arquivo disponível.\n
+ ${_bld}-i [idioma]${_nml} ou ${_bld}--idioma [idioma]${_nml} ➜    Use para mudar o idioma.\n
+    ${_bld}Idiomas disponíveis:${_nml}
+    Português do Brasil ➜      pt-br
+    United States English ➜    us-en\n
+ ${_bld}-v${_nml} ou ${_bld}--versao${_nml} ➜        Use para apresentar a versão atual.\n
  \e]8;;https://github.com/bill1300/atualizar\aProjeto Atualizar (GitHub)\e]8;;\a
  \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
         fi
         if [ "$idioma" = "en-us" ]; then
-            echo -e " \e[34;1mCommands: \e[1;37m\n
- \033[1m-a\033[0m or \033[1m--ajuda\033[0m ➜         Use to display input parameters and other information.\n
- \033[1m-d\033[0m or \033[1m--desinstalar\033[0m ➜   Use to uninstall, there is a message for confirmation.
- \033[1m-D\033[0m ➜                    Use to uninstall.\n
- \033[1m-s\033[0m or \033[1m--simples\033[0m ➜       Use to perform simple directory, kernel, and distribution update functions only.\n
- \033[1m-r\033[0m or \033[1m--reescrever\033[0m ➜    Use to download and install the latest available file version, there is a message for confirmation.
- \033[1m-R\033[0m ➜                    Use to download and install the latest available file version.\n
- \033[1m-v\033[0m or \033[1m--versao\033[0m ➜        Use to display the current version\n
+            echo -e "${_ttl}Commands: ${_nml}\n
+ ${_bld}-a${_nml} or ${_bld}--ajuda${_nml} ➜         Use to display input parameters and other information.\n
+ ${_bld}-d${_nml} or ${_bld}--desinstalar${_nml} ➜   Use to uninstall, there is a message for confirmation.
+ ${_bld}-D${_nml} ➜                    Use to uninstall.\n
+ ${_bld}-s${_nml} or ${_bld}--simples${_nml} ➜       Use to perform simple directory, kernel, and distribution update functions only.\n
+ ${_bld}-r${_nml} or ${_bld}--reescrever${_nml} ➜    Use to download and install the latest available file version, there is a message for confirmation.
+ ${_bld}-R${_nml} ➜                    Use to download and install the latest available file version.\n
+  ${_bld}-i [language]${_nml} ou ${_bld}--idioma [language]${_nml} ➜    Use to change language.\n
+    ${_bld}Available languages:${_nml}
+    Português do Brasil ➜      pt-br
+    United States English ➜    us-en\n
+ ${_bld}-v${_nml} or ${_bld}--versao${_nml} ➜        Use to display the current version\n
  \e]8;;https://github.com/bill1300/atualizar\aAtualizar project (GitHub)\e]8;;\a
  \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
 
@@ -625,14 +649,14 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 valorReescrita=0
                 while [ "$valorReescrita" != "S" -a "$valorReescrita" != "s" -a "$valorReescrita" != "N" -a "$valorReescrita" != "n" ]; do
                     clear
-                    echo -e " \e[34;1mVocê realmente deseja reescrever o arquivo para a versão mais atual? (S/N) \e[1;37m"
+                    echo -e "${_ttl}Você realmente deseja reescrever o arquivo para a versão mais atual? (S/N) ${_nml}"
                     read -n1 valorReescrita
                 done
                 if [ "$valorReescrita" = "S" -o "$valorReescrita" = "s" ]; then
                     atualizarArquivoComandos
                 else
                     clear
-                    echo -e " \e[34;1mOperação cancelada \e[1;37m"
+                    echo -e "${_ttl}Operação cancelada ${_nml}"
                 fi
             fi
         else
@@ -643,41 +667,84 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
     # Função de apresentar versão.
     function mostrarVersao() {
         if [ "$idioma" = "pt-br" ]; then
-            echo -e "Atualizar está na versão: \033[1m$versao\033[0m"
+            echo -e "Atualizar está na versão: ${_bld}$versao${_nml}"
         fi
         if [ "$idioma" = "en-us" ]; then
-            echo -e "Atualizar is in version: \033[1m$versao\033[0m"
+            echo -e "Atualizar is in version: ${_bld}$versao${_nml}"
         fi
     }
 
-    # Função de apresentar versão.
+    # Função de mudar o idioma.
     function mudarIdioma() {
-        idioma=$1
+        idiomaEntrada=$1
+
         if [ "$idioma" = "pt-br" ]; then
-            escrever="idioma=\"pt-br\" # \"pt-br\" ou \"en-us\""
-            sudo sed -i "3 c$escrever" /bin/atualizar >/dev/null
-            echo -e "O Atualizar está no idioma: \033[1mPortuguês do Brasil\033[0m"
+            frase="Parâmetro desconhecido, tente: ${_bld}atualizar --ajuda${_nml} para ver os parâmetros disponíveis."
         fi
         if [ "$idioma" = "en-us" ]; then
-            escrever="idioma=\"en-us\" # \"pt-br\" ou \"en-us\""
-            sudo sed -i "3 c$escrever" /bin/atualizar >/dev/null
-            echo -e "Atualizar is in the language: \033[1mUnited States English\033[0m"
+            frase="Unknown parameter, try: ${_bld}atualizar --ajuda${_nml} to see available  e parameters."
+        fi
+        
+        if [ -z "$idiomaEntrada" ]; then
+            echo -e "$frase"
+        else
+            case "$idiomaEntrada" in
+                pt-br)
+                    escrever="idioma=\"pt-br\""
+                    sudo sed -i "1c$escrever" ~/.atualizar/dados.config
+                    echo -e "O Atualizar está no idioma: ${_bld}Português do Brasil${_nml}"
+                ;;
+                en-us)
+                    escrever="idioma=\"en-us\""
+                    sudo sed -i "1c$escrever" ~/.atualizar/dados.config
+                    echo -e "Atualizar is in the language: ${_bld}United States English${_nml}"
+                ;;
+                *)
+                    echo -e "$frase"
+                ;;
+            esac
         fi
     }
 
+    # Função de apresentar histórico (lista de arquivo: ~/.atualizar/dados.config)
+    function apresentarHistorico() {
+        if [ "$idioma" = "pt-br" ]; then
+            cabecalho="Horário / Data / Versão / Número de pacotes"
+            info1="Para acessar todos os registros de atualizações com mais informações entre no diretório: ➜  ${_bld}~/.atualizar/logs/${_nml}\n"
+            info2="Histórico vazio."
+        fi
+        if [ "$idioma" = "en-us" ]; then
+            cabecalho="Time / Date / Version / Number of packages"
+            info1="To access all updates logs with more information, enter the directory: ➜  ${_bld}~/.atualizar/logs/${_nml}\n"
+            info2="History is empty."
+        fi
+        clear
+        cmdLista=$(sudo sed -n '2,$p' ~/.atualizar/dados.config)
+        if [ -z "$cmdLista" ]; then
+            echo -e "${_bld}$info2"
+        else
+            echo -e "$info1"
+            echo -e "${_ttl}$cabecalho"
+            echo -e "${_nml}$cmdLista"
+        fi
+    }
+
+    idiomaDoc=$(sudo sed -n '1p' ~/.atualizar/dados.config)
+    sudo sed -i "3c$idiomaDoc" /bin/atualizar >/dev/null
+    
     if [ "$idioma" = "pt-br" ]; then
-        info1="Parâmetro desconhecido, tente: \033[1matualizar --ajuda\033[0m para ver os parâmetros disponíveis."
+        info1="Parâmetro desconhecido, tente: ${_bld}atualizar --ajuda${_nml} para ver os parâmetros disponíveis."
         info2="Iniciando..."
     fi
     if [ "$idioma" = "en-us" ]; then
-        info1="Unknown parameter, try: \033[1matualizar --ajuda\033[0m to see availabl  e parameters."
+        info1="Unknown parameter, try: ${_bld}atualizar --ajuda${_nml} to see available parameters."
         info2="Starting..."
     fi
 
     comandoEnderecoFixo=$(sudo find /usr/bin -type f -name atualizar)
 
     if [ -z "$comandoEnderecoFixo" ]; then
-        echo -e " \e[34;1m$info2 \e[1;37m"
+        echo -e "${_ttl}$info2 ${_nml}"
         moverArquivos
     else
         if [ -n "$param1" ]; then
@@ -706,12 +773,15 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             -v | --versao)
                 mostrarVersao
                 ;;
+            -h | --historico)
+                apresentarHistorico
+                ;;
             *)
                 echo -e "$info1"
                 ;;
             esac
         else
-            echo -e " \e[34;1m$info2 \e[1;37m"
+            echo -e "${_ttl}$info2 ${_nml}"
             execAtualizar
         fi
     fi

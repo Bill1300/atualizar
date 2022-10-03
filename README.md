@@ -43,13 +43,6 @@ Ou execute o aplicativo "atualizar" na sua lista de aplicativos.
  Exemplo:
 > atualizar --reescrever
 
-#### Mostrar versão ➜
- Use para apresentar a versão atual:
- `-v` ou `--versao`
-
- Exemplo:
-> atualizar --versao
-
 #### Mudar idioma ➜
  Use para mudar o idioma:
  `-i` ou `--idioma`, seguido da sigla do idioma selecionado. (Por padrão é selecionado **Português do Brasil**).
@@ -57,11 +50,26 @@ Ou execute o aplicativo "atualizar" na sua lista de aplicativos.
  Exemplo:
 > atualizar --idioma pt-br
 
+Idiomas disponíveis:
+
 Idioma  | Sigla
 ------------- | -------------
 Português do Brasil | pt-br
 United States English | en-us
 
+#### Mostrar histórico ➜
+ Use para apresentar a versão atual:
+ `-h` ou `--historico`
+
+ Exemplo:
+> atualizar --historico
+
+#### Mostrar versão ➜
+ Use para apresentar a versão atual:
+ `-v` ou `--versao`
+
+ Exemplo:
+> atualizar --versao
 
 
 ### Aplicativos
