@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="22.10"
+versao="22.10.1"
 idioma="pt-br"
 
 _alt="\e[1;41m"     #Alerta
@@ -20,12 +20,12 @@ function verificarArquivo() {
         sudo chmod +x atualizar.sh
         sudo mv atualizar.sh atualizar
 
-        # Diretório de logs.
+        # Diretório de registros.
         sudo mkdir ~/.atualizar
-        sudo mkdir ~/.atualizar/logs
+        sudo mkdir ~/.atualizar/registros
         sudo mkdir ~/.atualizar/imagens
-        sudo touch ~/.atualizar/dados.config
-        echo -e "idioma=\"pt-br\"\n" | sudo tee ~/.atualizar/dados.config
+        sudo touch ~/.atualizar/dados.list
+        echo -e "idioma=\"pt-br\"\n" | sudo tee ~/.atualizar/dados.list
 
         sudo wget -P ~/.atualizar/imagens https://i.imgur.com/sDdxIJ9.png
         sudo mv ~/.atualizar/imagens/sDdxIJ9.png ~/.atualizar/imagens/atualizar.png
@@ -62,7 +62,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             criarHistorico() {
                 versaoDistro=$(cat /etc/issue.net)
                 linha="$hora     $data     $versaoDistro     $numeroPacotes"
-                sudo sed -i "2i $linha" ~/.atualizar/dados.config
+                sudo sed -i "2i $linha" ~/.atualizar/dados.list
             }
 
             parametroLog=$1
@@ -74,6 +74,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             dataLog=$(date '+%d-%m-%Y_%H-%M-%S')
 
             dataTexto="$data $hora"
+            distroNome=$(lsb_release -cs)
 
             criarHistorico
 
@@ -82,7 +83,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 infoUsuario="Executado por: $usuarioTexto ($dataTexto)."
                 infoModoSimples="Executado em modo: \"Simples\"."
                 infoModoPadrao="Executado em modo: \"Padrão\""
-                infoVersao="A versão NÃO foi modificada. Versão atual: $versaoAtual"
+                infoVersao="A versão NÃO foi modificada. Versão atual: $versaoAtual ($distroNome)"
                 infoVersaoAnterior="Versão Anterior: $versaoAnterior"
                 infoVersaoInstalada="Versão Instalada: $versaoAtual"
                 infoPacotes1="Nenhum pacote foi adicionado."
@@ -93,7 +94,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 infoUsuario="Executed by: $usuarioTexto ($dataTexto)."
                 infoModoSimples="Execution mode: \"Simple\"."
                 infoModoPadrao="Execution mode: \"Default\"."
-                infoVersao="The version has NOT been modified. Current version: $versaoAtual"
+                infoVersao="The version has NOT been modified. Current version: $versaoAtual ($distroNome)"
                 infoVersaoAnterior="Previous version: $versaoAnterior"
                 infoVersaoInstalada="Installed Version: $versaoAtual"
                 infoPacotes1="No packages have been added."
@@ -101,25 +102,25 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             fi
 
             # Gravar dados.
-            sudo echo -e "$infoUsuario" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
+            sudo echo -e "$infoUsuario" | sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
 
             if [ "$parametroLog" = "paramS" ]; then
-                sudo echo -e "$infoModoSimples" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
+                sudo echo -e "$infoModoSimples" | sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
             else
-                sudo echo -e "$infoModoPadrao" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
+                sudo echo -e "$infoModoPadrao" | sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
             fi
 
             if [ "$versaoAtual" = "$versaoAnterior" ]; then
-                sudo echo -e "$infoVersao.\n" | sudo sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
+                sudo echo -e "$infoVersao.\n" | sudo sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
             else
-                sudo echo -e "$infoVersaoAnterior" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
-                sudo echo -e "$infoVersaoInstalada\n" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
+                sudo echo -e "$infoVersaoAnterior" | sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
+                sudo echo -e "$infoVersaoInstalada\n" | sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
             fi
 
             if [ "$numeroPacotes" -eq 0 ]; then
-                sudo echo -e "$infoPacotes1" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
+                sudo echo -e "$infoPacotes1" | sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
             else
-                sudo echo -e "$infoPacotes2\n$exibirPacotes" | sudo tee -a ~/.atualizar/logs/log_$dataLog.txt >/dev/null
+                sudo echo -e "$infoPacotes2\n$exibirPacotes" | sudo tee -a ~/.atualizar/registros/registro_$dataLog.txt >/dev/null
             fi
         }
 
@@ -136,7 +137,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             if [ "$parametroF1" = "paramS" ]; then
                 echo -e "${_ttl}(1/4) $frase ➜ ${_nml}\n"
             else
-                echo -e "${_ttl}(1/9) $frase ➜ ${_nml}\n"
+                echo -e "${_ttl}(1/7) $frase ➜ ${_nml}\n"
             fi
             sudo apt update -y
         }
@@ -154,7 +155,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             if [ "$parametroF2" = "paramS" ]; then
                 echo -e "${_ttl}(2/4) $frase ➜ ${_nml}\n"
             else
-                echo -e "${_ttl}(2/9) $frase ➜ ${_nml}\n"
+                echo -e "${_ttl}(2/7) $frase ➜ ${_nml}\n"
             fi
             sudo apt upgrade -y
         }
@@ -172,26 +173,13 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             if [ "$parametroF3" = "paramS" ]; then
                 echo -e "${_ttl}(3/4) $frase ➜ ${_nml}\n"
             else
-                echo -e "${_ttl}(3/9) $frase ➜ ${_nml}\n"
+                echo -e "${_ttl}(3/7) $frase ➜ ${_nml}\n"
             fi
-            sudo apt dist-upgrade -y
+            sudo apt do-release-upgrade -y
         }
 
-        # 4- Atualizar Grub.
+        # 4- Corrigir pacotes corrompidos.
         function f4() {
-            if [ "$idioma" = "pt-br" ]; then
-                frase="Atualizando Grub"
-            fi
-            if [ "$idioma" = "en-us" ]; then
-                frase="Updating Grub"
-            fi
-            clear
-            echo -e "${_ttl}(4/9) $frase ➜ ${_nml}\n"
-            sudo update-grub -y
-        }
-
-        # 5- Corrigir pacotes corrompidos.
-        function f5() {
             if [ "$idioma" = "pt-br" ]; then
                 frase=" Corrigindo pacotes corrompidos"
             fi
@@ -199,12 +187,12 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Fixing corrupted packages"
             fi
             clear
-            echo -e "${_ttl}(5/9) $frase ➜ ${_nml}\n"
+            echo -e "${_ttl}(4/7) $frase ➜ ${_nml}\n"
             sudo apt install -f
         }
 
-        # 6- Removendo arquivos desnecessários para o Sistema usados na atualização.
-        function f6() {
+        # 5- Removendo arquivos desnecessários para o Sistema usados na atualização.
+        function f5() {
             if [ "$idioma" = "pt-br" ]; then
                 frase="Removendo arquivos desnecessários para o Sistema usados na atualização"
             fi
@@ -212,12 +200,12 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Removing unnecessary files for the System used in the update"
             fi
             clear
-            echo -e "${_ttl}(6/9) $frase ➜ ${_nml}\n"
+            echo -e "${_ttl}(5/7) $frase ➜ ${_nml}\n"
             sudo apt autoclean -y
         }
 
-        # 7- Removendo arquivos do repositório local desnecessários para o Sistema.
-        function f7() {
+        # 6- Removendo arquivos do repositório local desnecessários para o Sistema.
+        function f6() {
             if [ "$idioma" = "pt-br" ]; then
                 frase="Removendo arquivos desnecessários para o Sistema usados na atualização"
             fi
@@ -225,25 +213,12 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 frase="Removing unnecessary files from the local repository for the System"
             fi
             clear
-            echo -e "${_ttl}(7/9) $frase ➜ ${_nml}\n"
+            echo -e "${_ttl}(6/7) $frase ➜ ${_nml}\n"
             sudo apt autoremove -y
         }
 
-        # 8- Removendo Remove os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/.
-        function f8() {
-            if [ "$idioma" = "pt-br" ]; then
-                frase="Removendo os arquivos do /var/cache/apt/archives/ e /var/cache/apt/archives/partial/"
-            fi
-            if [ "$idioma" = "en-us" ]; then
-                frase="Removing files from /var/cache/apt/archives/ and /var/cache/apt/archives/partial/"
-            fi
-            clear
-            echo -e "${_ttl}(8/9) $frase ➜ ${_nml}\n"
-            sudo apt clean -y
-        }
-
-        # 9- Mostra informações.
-        function f9() {
+        # 7- Mostra informações.
+        function f7() {
             if [ "$idioma" = "pt-br" ]; then
                 frase="Atualização conclúida com sucesso"
                 notificacaoSimples="atualizar (Simples)"
@@ -271,11 +246,11 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             if [ "$parametroF7" = "paramS" ]; then
                 criarLog $parametroF7
                 notify-send -i ~/.atualizar/imagens/atualizar.png "$notificacaoSimples" "$frase ➜"
-                echo -e "${_ttl}(4/4) $frase ➜ ${_nml}"
+                echo -e "${_ttl}(7/4) $frase ➜ ${_nml}"
             else
                 criarLog
                 notify-send -i ~/.atualizar/imagens/atualizar.png "$notificacaoPadrao" "$frase ➜"
-                echo -e "${_ttl}(9/9) $frase ➜ ${_nml}"
+                echo -e "${_ttl}(7/7) $frase ➜ ${_nml}"
             fi
 
             echo -e "\n${_bld}$info1 ${_nml}"
@@ -512,7 +487,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 f1 $parametroExec
                 f2 $parametroExec
                 f3 $parametroExec
-                f9 $parametroExec
+                f7 $parametroExec
             # Chamada de modo "Padrão".
             else
                 menuVerificacao
@@ -523,8 +498,6 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 f5
                 f6
                 f7
-                f8
-                f9
                 reiniciarComputador
             fi
         else
@@ -550,7 +523,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
    Contact your ISP's support.\n"
         fi
     }
-    # Função de desinstalar programa e logs.
+    # Função de desinstalar programa e registros.
     function desinstalar() {
         if [ "$idioma" = "pt-br" ]; then
             info1="VOCÊ REALMENTE DESEJA DESINSTALAR?"
@@ -605,6 +578,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
     United States English ➜    us-en\n
  ${_bld}-v${_nml} ou ${_bld}--versao${_nml} ➜        Use para apresentar a versão atual.\n
  \e]8;;https://github.com/bill1300/atualizar\aProjeto Atualizar (GitHub)\e]8;;\a
+ \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentação (GitHub Pages)\e]8;;\a
  \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
         fi
         if [ "$idioma" = "en-us" ]; then
@@ -621,6 +595,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
     United States English ➜    us-en\n
  ${_bld}-v${_nml} or ${_bld}--versao${_nml} ➜        Use to display the current version\n
  \e]8;;https://github.com/bill1300/atualizar\aAtualizar project (GitHub)\e]8;;\a
+ \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentation (GitHub Pages)\e]8;;\a
  \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
 
         fi
@@ -691,12 +666,12 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             case "$idiomaEntrada" in
                 pt-br)
                     escrever="idioma=\"pt-br\""
-                    sudo sed -i "1c$escrever" ~/.atualizar/dados.config
+                    sudo sed -i "1c$escrever" ~/.atualizar/dados.list
                     echo -e "O Atualizar está no idioma: ${_bld}Português do Brasil${_nml}"
                 ;;
                 en-us)
                     escrever="idioma=\"en-us\""
-                    sudo sed -i "1c$escrever" ~/.atualizar/dados.config
+                    sudo sed -i "1c$escrever" ~/.atualizar/dados.list
                     echo -e "Atualizar is in the language: ${_bld}United States English${_nml}"
                 ;;
                 *)
@@ -706,20 +681,20 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         fi
     }
 
-    # Função de apresentar histórico (lista de arquivo: ~/.atualizar/dados.config)
+    # Função de apresentar histórico (lista de arquivo: ~/.atualizar/dados.list)
     function apresentarHistorico() {
         if [ "$idioma" = "pt-br" ]; then
             cabecalho="Horário / Data / Versão / Número de pacotes"
-            info1="Para acessar todos os registros de atualizações com mais informações entre no diretório: ➜  ${_bld}~/.atualizar/logs/${_nml}\n"
+            info1="Para acessar todos os registros de atualizações com mais informações entre no diretório: ➜  ${_bld}~/.atualizar/registros/${_nml}\n"
             info2="Histórico vazio."
         fi
         if [ "$idioma" = "en-us" ]; then
             cabecalho="Time / Date / Version / Number of packages"
-            info1="To access all updates logs with more information, enter the directory: ➜  ${_bld}~/.atualizar/logs/${_nml}\n"
+            info1="To access all updates registros with more information, enter the directory: ➜  ${_bld}~/.atualizar/registros/${_nml}\n"
             info2="History is empty."
         fi
         clear
-        cmdLista=$(sudo sed -n '2,$p' ~/.atualizar/dados.config)
+        cmdLista=$(sudo sed -n '2,$p' ~/.atualizar/dados.list)
         if [ -z "$cmdLista" ]; then
             echo -e "${_bld}$info2"
         else
@@ -729,7 +704,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         fi
     }
 
-    idiomaDoc=$(sudo sed -n '1p' ~/.atualizar/dados.config)
+    idiomaDoc=$(sudo sed -n '1p' ~/.atualizar/dados.list)
     sudo sed -i "3c$idiomaDoc" /bin/atualizar >/dev/null
     
     if [ "$idioma" = "pt-br" ]; then
