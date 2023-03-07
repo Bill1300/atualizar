@@ -17,7 +17,7 @@ function verificarArquivo() {
 
         sudo mv $comandoEnderecoMover /bin
         cd /bin
-        sudo chmod +x atualizar.sh
+        sudo chmod ug+x atualizar.sh
         sudo mv atualizar.sh atualizar
 
         # Diretório de registros.
