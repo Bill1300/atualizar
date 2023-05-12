@@ -1,5 +1,7 @@
-Versão: 22.10.1
+Versão: 23.5.2
 [Documentação ➜](https://bill1300.github.io/atualizar-docs/)
+
+Este obra está licenciado com uma [Licença Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 <div align="center">
   <img width="128" height="128" src="https://user-images.githubusercontent.com/42590905/192646234-96f838eb-a651-40fb-b8ef-c528b6aa7bc3.png">

@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="22.10.1"
+versao="23.5.2"
 idioma="pt-br"
 
 _alt="\e[1;41m"     #Alerta
@@ -279,6 +279,8 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
 
             echo -e "\n${_lnk}https://github.com/bill1300/atualizar\a$infoLink (GitHub)${_lnk}\a"
             echo -e "${_lnk}https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)${_lnk}\a"
+		echo ""
+		echo -e "Este obra está licenciado com uma Licença ${_lnk}http://creativecommons.org/licenses/by-nc-sa/4.0/\aCreative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional${_lnk}\a."
         }
 
         # Adicionar temporizador para leitura do usuário de f7.
