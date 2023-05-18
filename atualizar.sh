@@ -577,11 +577,13 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
  ${_bld}-i [idioma]${_nml} ou ${_bld}--idioma [idioma]${_nml} ➜    Use para mudar o idioma.\n
     ${_bld}Idiomas disponíveis:${_nml}
     Português do Brasil ➜      pt-br
-    United States English ➜    us-en\n
+    United States English ➜    en-us\n
  ${_bld}-v${_nml} ou ${_bld}--versao${_nml} ➜        Use para apresentar a versão atual.\n
  \e]8;;https://github.com/bill1300/atualizar\aProjeto Atualizar (GitHub)\e]8;;\a
  \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentação (GitHub Pages)\e]8;;\a
- \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
+ \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n
+ Este obra está licenciado com uma Licença \e]8;;http://creativecommons.org/licenses/by-nc-sa/4.0/\aCreative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional\e]8;;\a.\n"
+
         fi
         if [ "$idioma" = "en-us" ]; then
             echo -e "${_ttl}Commands: ${_nml}\n
@@ -594,11 +596,11 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
   ${_bld}-i [language]${_nml} ou ${_bld}--idioma [language]${_nml} ➜    Use to change language.\n
     ${_bld}Available languages:${_nml}
     Português do Brasil ➜      pt-br
-    United States English ➜    us-en\n
+    United States English ➜    en-us\n
  ${_bld}-v${_nml} or ${_bld}--versao${_nml} ➜        Use to display the current version\n
  \e]8;;https://github.com/bill1300/atualizar\aAtualizar project (GitHub)\e]8;;\a
- \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentation (GitHub Pages)\e]8;;\a
- \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n"
+ \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentation (GitHub Pages)\e]8;;\a\n
+ This work is licensed under a \e]8;;http://creativecommons.org/licenses/by-nc-sa/4.0/\aCreative Commons Attribution-NonCommercial-ShareAlike 4.0 International License\e]8;;\a.\n"
 
         fi
     }
