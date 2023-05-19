@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="23.5.2"
+versao="23.5.3"
 idioma="pt-br"
 
 _alt="\e[1;41m"     #Alerta
@@ -68,14 +68,11 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             parametroLog=$1
             usuarioTexto=$(whoami)
             versaoAtual=$(uname -a)
-
             data=$(date +%x)
             hora=$(date +%X)
             dataLog=$(date '+%d-%m-%Y_%H-%M-%S')
-
             dataTexto="$data $hora"
             distroNome=$(lsb_release -cs)
-
             criarHistorico
 
             if [ "$idioma" = "pt-br" ]; then
@@ -279,8 +276,8 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
 
             echo -e "\n${_lnk}https://github.com/bill1300/atualizar\a$infoLink (GitHub)${_lnk}\a"
             echo -e "${_lnk}https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)${_lnk}\a"
-		echo ""
-		echo -e "Este obra está licenciado com uma Licença ${_lnk}http://creativecommons.org/licenses/by-nc-sa/4.0/\aCreative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional${_lnk}\a."
+		    echo ""
+		    echo -e "Este obra está licenciado com uma Licença ${_lnk}http://creativecommons.org/licenses/by-nc-sa/4.0/\aCreative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional${_lnk}\a."
         }
 
         # Adicionar temporizador para leitura do usuário de f7.
@@ -578,12 +575,20 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
     ${_bld}Idiomas disponíveis:${_nml}
     Português do Brasil ➜      pt-br
     United States English ➜    en-us\n
- ${_bld}-v${_nml} ou ${_bld}--versao${_nml} ➜        Use para apresentar a versão atual.\n
+
+ ${_bld}-t [agendamento] ${_nml}ou ${_bld}--temporizador [agendamento]${_nml} ➜              Agendamento de atualizações.\n   
+    ${_bld}Valores disponíveis:
+    ${_nml}Agenda atualizações todas as ${_bld}horas${nml} ➜                         ${_bld}1 ${_nml}ou ${_bld}hora
+    ${_nml}Agenda atualizações todos os ${_bld}dias${nml} ➜                          ${_bld}2 ${_nml}ou ${_bld}dia
+    ${_nml}Agenda atualizações todas as ${_bld}semanas${nml} ➜                       ${_bld}3 ${_nml}ou ${_bld}semana
+    ${_nml}Agenda atualizações todos os ${_bld}meses${_nml} ➜                         ${_bld}4 ${_nml}ou ${_bld}mes
+    ${_nml}Todos os agendamentos de atualizações são deletadas ➜        ${_bld}0 ${_nml}ou ${_bld}nenhum\n
+ ${_bld}-h${_nml} ou ${_bld}--historico${_nml} ➜     Use para apresentar um histórico de execuções.\n
+ ${_bld}-v${_nml} ou ${_bld}--versao${_nml} ➜        Use para apresentar a versão atual. ($versao)\n
  \e]8;;https://github.com/bill1300/atualizar\aProjeto Atualizar (GitHub)\e]8;;\a
  \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentação (GitHub Pages)\e]8;;\a
  \e]8;;https://forms.gle/ysh5avJ1WCGsWeoH6\aFeedback (Google Forms)\e]8;;\a\n
  Este obra está licenciado com uma Licença \e]8;;http://creativecommons.org/licenses/by-nc-sa/4.0/\aCreative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional\e]8;;\a.\n"
-
         fi
         if [ "$idioma" = "en-us" ]; then
             echo -e "${_ttl}Commands: ${_nml}\n
@@ -593,11 +598,20 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
  ${_bld}-s${_nml} or ${_bld}--simples${_nml} ➜       Use to perform simple directory, kernel, and distribution update functions only.\n
  ${_bld}-r${_nml} or ${_bld}--reescrever${_nml} ➜    Use to download and install the latest available file version, there is a message for confirmation.
  ${_bld}-R${_nml} ➜                    Use to download and install the latest available file version.\n
-  ${_bld}-i [language]${_nml} ou ${_bld}--idioma [language]${_nml} ➜    Use to change language.\n
+ ${_bld}-i [language]${_nml} ou ${_bld}--idioma [language]${_nml} ➜    Use to change language.\n
     ${_bld}Available languages:${_nml}
     Português do Brasil ➜      pt-br
     United States English ➜    en-us\n
- ${_bld}-v${_nml} or ${_bld}--versao${_nml} ➜        Use to display the current version\n
+
+ ${_bld}-t [scheduling] ${_nml}or ${_bld}--temporizador [scheduling]${_nml} ➜ Schedule updates.\n
+     ${_bld}Available values:
+     ${_nml}Schedule updates every ${_bld}hour${nml} ➜         ${_bld}1 ${_nml}or ${_bld}hora
+     ${_nml}Schedule updates every ${_bld}day${nml} ➜          ${_bld}2 ${_nml}or ${_bld}dia
+     ${_nml}Schedule updates every ${_bld}week${nml} ➜         ${_bld}3 ${_nml}or ${_bld}semana
+     ${_nml}Schedule updates every ${_bld}month${_nml} ➜        ${_bld}4 ${_nml}or ${_bld}mes
+     ${_nml}All update schedules are deleted ➜    ${_bld}0 ${_nml}or ${_bld}nenhum\n
+${_bld}-h${_nml} or ${_bld}--historico${_nml} ➜      Use to display a run history.\n
+ ${_bld}-v${_nml} or ${_bld}--versao${_nml} ➜        Use to display the current version. ($versao)\n
  \e]8;;https://github.com/bill1300/atualizar\aAtualizar project (GitHub)\e]8;;\a
  \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentation (GitHub Pages)\e]8;;\a\n
  This work is licensed under a \e]8;;http://creativecommons.org/licenses/by-nc-sa/4.0/\aCreative Commons Attribution-NonCommercial-ShareAlike 4.0 International License\e]8;;\a.\n"
@@ -708,6 +722,106 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
         fi
     }
 
+    function definirTempo() {
+        param=$1
+        if [ -n "$param" ]; then
+            case $param in
+                0 | nenhum)
+                sudo rm /etc/cron.monthly/mes-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.weekly/semana-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.daily/dia-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.hourly/hora-atualizar.sh 2>/dev/null
+                clear
+                if [ "$idioma" = "pt-br" ]; then
+                    echo "Todos os agendamentos de atualizações foram deletadas."
+                fi
+                if [ "$idioma" = "en-us" ]; then
+                    echo "All update schedules have been deleted."
+                fi
+                ;;        
+                1 | hora)
+                sudo rm /etc/cron.monthly/mes-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.weekly/semana-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.daily/dia-atualizar.sh 2>/dev/null
+                echo -e "#!/bin/bash\natualizar -s" | sudo tee /etc/cron.hourly/hora-atualizar.sh 2>/dev/null
+                clear
+                if [ "$idioma" = "pt-br" ]; then
+                    echo -e "A atualização será executada a cada ${bld}HORA${nml}."
+                fi
+                if [ "$idioma" = "en-us" ]; then
+                    echo -e "The update will be performed every ${bld}HOUR${nml}."
+                fi 
+                ;;
+                2 | dia)
+                sudo rm /etc/cron.monthly/mes-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.weekly/semana-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.hourly/hora-atualizar.sh 2>/dev/null
+                echo -e "#!/bin/bash\natualizar -s" | sudo tee /etc/cron.daily/dia-atualizar.sh 2>/dev/null
+                clear
+                if [ "$idioma" = "pt-br" ]; then
+                    echo -e "A atualização será executada a cada ${bld}DIA${nml}."
+                fi
+                if [ "$idioma" = "en-us" ]; then
+                    echo -e "The update will be performed every ${bld}DAY${nml}."
+                fi 
+                ;;        
+                3 | semana)
+                sudo rm /etc/cron.monthly/mes-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.daily/dia-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.hourly/hora-atualizar.sh 2>/dev/null
+                echo -e "#!/bin/bash\natualizar -s" | sudo tee /etc/cron.weekly/semana-atualizar.sh 2>/dev/null
+                clear
+                if [ "$idioma" = "pt-br" ]; then
+                    echo -e "A atualização será executada: a cada ${bld}SEMANA${nml}."
+                fi
+                if [ "$idioma" = "en-us" ]; then
+                    echo -e "The update will be performed: every ${bld}WEEK${nml}."
+                fi                 
+                ;;
+                4 | mes)
+                sudo rm /etc/cron.weekly/semana-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.daily/dia-atualizar.sh 2>/dev/null
+                sudo rm /etc/cron.hourly/hora-atualizar.sh 2>/dev/null
+                echo -e "#!/bin/bash\natualizar -s" | sudo tee /etc/cron.monthly/mes-atualizar.sh 2>/dev/null
+                clear
+                if [ "$idioma" = "pt-br" ]; then
+                    echo -e "A atualização será executada: a cada ${bld}MẼS${nml}."
+                fi
+                if [ "$idioma" = "en-us" ]; then
+                    echo -e "The update will be performed: every ${bld}MONTH${nml}."
+                fi    
+                ;;
+                *)
+                if [ "$idioma" = "pt-br" ]; then                
+                    echo "Valor desconhecido, tente: ${_bld}atualizar --ajuda${_nml} para ver os parâmetros disponíveis."
+                fi
+                if [ "$idioma" = "en-us" ]; then                
+                    echo "Unknown value, try: ${_bld}atualizar --ajuda${_nml} to see available parameters."
+                fi
+                ;;
+            esac
+        else
+            if [ $idioma = "pt-br" ]; then
+                echo -e "Insira um valor para a função de agendamento (temporizador)."
+                echo -e "Valores disponíveis:
+     ${_bld}1 ${_nml}ou ${_bld}hora     ➜ ${_nml}Agenda atualizações todas as ${_bld}horas${_nml}.
+     ${_bld}2 ${_nml}ou ${_bld}dia      ➜ ${_nml}Agenda atualizações todos os ${_bld}dias${_nml}.
+     ${_bld}3 ${_nml}ou ${_bld}semana   ➜ ${_nml}Agenda atualizações todas as ${_bld}semanas${_nml}.
+     ${_bld}4 ${_nml}ou ${_bld}mes      ➜ ${_nml}Agenda atualizações todos os ${_bld}meses${_nml}.
+     ${_bld}0 ${_nml}ou ${_bld}nenhum   ➜ ${_nml}Todos os agendamentos de atualizações são deletadas."
+            fi
+            if [ $idioma = "en-us" ]; then
+                echo -e "Enter a value for the schedule function (timer)."
+                echo -e "Available values:
+     ${_bld}1 ${_nml}or ${_bld}hora ➜ ${_nml}Schedule updates every ${_bld}hour${_nml}.
+     ${_bld}2 ${_nml}or ${_bld}dia ➜ ${_nml}Schedule updates every ${_bld}day${_nml}.
+     ${_bld}3 ${_nml}or ${_bld}semana ➜ ${_nml}Schedule updates every ${_bld}week${_nml}.
+     ${_bld}4 ${_nml}or ${_bld}mes ➜ ${_nml}Schedule updates every ${_bld}month${_nml}.
+     ${_bld}0 ${_nml}or ${_bld}nenhum ➜ ${_nml}All update schedules are deleted."
+            fi
+        fi
+} 
+
     idiomaDoc=$(sudo sed -n '1p' ~/.atualizar/dados.list)
     sudo sed -i "3c$idiomaDoc" /bin/atualizar >/dev/null
     
@@ -754,6 +868,9 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
                 ;;
             -h | --historico)
                 apresentarHistorico
+                ;;
+            -t | --temporizador)
+                definirTempo $param2
                 ;;
             *)
                 echo -e "$info1"

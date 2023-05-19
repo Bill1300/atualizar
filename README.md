@@ -1,4 +1,4 @@
-Versão: 23.5.2
+Versão: 23.5.3
 [Documentação ➜](https://bill1300.github.io/atualizar-docs/)
 
 Este obra está licenciado com uma [Licença Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional](https://creativecommons.org/licenses/by-nc-sa/4.0/).
@@ -57,11 +57,29 @@ Idiomas disponíveis:
 
 Idioma  | Sigla
 ------------- | -------------
-Português do Brasil | pt-br
-United States English | en-us
+:brazil: Português do Brasil | pt-br
+:us: United States English | en-us
+
+#### Agendar atualização ➜
+ Use para agendar atualização:
+ `-t` ou `--temporizador`, seguido da sigla do valor selecionado. (Por padrão é selecionado **nenhum**).
+
+ Exemplo:
+> atualizar --temporizador mes
+
+Períodos disponíveis:
+
+Descrição  | Parâmetro
+------------- | -------------
+Agenda atualizações todas as **horas** | `hora` ou `1`
+Agenda atualizações todas os **dias** | `dia` ou `2`
+Agenda atualizações todas as **semanas** | `semana` ou `3`
+Agenda atualizações todas os **meses** | `mes` ou `4`
+
+Para deletar os agendamentos de atualizações utilize: `nenhum` ou `0`
 
 #### Mostrar histórico ➜
- Use para apresentar a versão atual:
+ Use para apresentar um histórico de execuções com detalhes:
  `-h` ou `--historico`
 
  Exemplo:
