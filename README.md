@@ -1,4 +1,4 @@
-Versão: 23.5.3
+Versão: 23.5.4
 [Documentação ➜](https://bill1300.github.io/atualizar-docs/)
 
 Este obra está licenciado com uma [Licença Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional](https://creativecommons.org/licenses/by-nc-sa/4.0/).
