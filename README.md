@@ -92,7 +92,7 @@ Para deletar os agendamentos de atualizações utilize: `nenhum` ou `0`
 | Exporta o histórico em uma planilha com extensão **CSV** | csv       |
 | Exporta o histórico em uma planilha com extensão **XML** | xml       |
 
- A planilha gerada no diretório: `~/.atualizar/planinhas`
+ A planilha é gerada no diretório: `~/.atualizar/planinhas`
 
 #### Mostrar versão ➜
  Use para apresentar a versão atual:
