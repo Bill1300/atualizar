@@ -23,6 +23,7 @@ function verificarArquivo() {
         # Diretório de registros.
         sudo mkdir ~/.atualizar
         sudo mkdir ~/.atualizar/registros
+        sudo mkdir ~/.atualizar/planilhas
         sudo mkdir ~/.atualizar/imagens
         sudo touch ~/.atualizar/dados.list
         echo -e "idioma=\"pt-br\"\n" | sudo tee ~/.atualizar/dados.list
@@ -61,7 +62,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             
             criarHistorico() {
                 versaoDistro=$(cat /etc/issue.net)
-                linha="$hora     $data     $versaoDistro     $numeroPacotes"
+                linha="$hora, $data, $versaoDistro, $numeroPacotes"
                 sudo sed -i "2i $linha" ~/.atualizar/dados.list
             }
 
@@ -576,14 +577,19 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
     Português do Brasil ➜      pt-br
     United States English ➜    en-us\n
 
- ${_bld}-t [agendamento] ${_nml}ou ${_bld}--temporizador [agendamento]${_nml} ➜              Agendamento de atualizações.\n   
-    ${_bld}Valores disponíveis:
+ ${_bld}-t [agendamento] ${_nml}ou ${_bld}--temporizador [agendamento]${_nml} ➜              Use para agendar atualizações.\n   
+    ${_bld}Períodos disponíveis:
     ${_nml}Agenda atualizações todas as ${_bld}horas${nml} ➜                         ${_bld}1 ${_nml}ou ${_bld}hora
     ${_nml}Agenda atualizações todos os ${_bld}dias${nml} ➜                          ${_bld}2 ${_nml}ou ${_bld}dia
     ${_nml}Agenda atualizações todas as ${_bld}semanas${nml} ➜                       ${_bld}3 ${_nml}ou ${_bld}semana
     ${_nml}Agenda atualizações todos os ${_bld}meses${_nml} ➜                         ${_bld}4 ${_nml}ou ${_bld}mes
     ${_nml}Todos os agendamentos de atualizações são deletadas ➜        ${_bld}0 ${_nml}ou ${_bld}nenhum\n
- ${_bld}-h${_nml} ou ${_bld}--historico${_nml} ➜     Use para apresentar um histórico de execuções.\n
+ ${_bld}-h${_nml} ou ${_bld}--historico${_nml} ➜                               Use para apresentar um histórico de execuções. Com a adição de um parâmetro é possível exportar a planilha:
+ ${_bld}-h [extensão]${_nml} ou ${_bld}--historico [extensão]${_nml} ➜         Com a adição de um parâmetro é possível exportar a planilha:\n
+    ${_bld}Extensões disponíveis:${_nml}
+    ${_nml}Exporta o histórico em uma planilha com extensão ${_bld}CSV${_nml} ➜       ${_bld}csv
+    ${_nml}Exporta o histórico em uma planilha com extensão ${_bld}XML${_nml} ➜       ${_bld}xml
+
  ${_bld}-v${_nml} ou ${_bld}--versao${_nml} ➜        Use para apresentar a versão atual. ($versao)\n
  \e]8;;https://github.com/bill1300/atualizar\aProjeto Atualizar (GitHub)\e]8;;\a
  \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentação (GitHub Pages)\e]8;;\a
@@ -603,14 +609,19 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
     Português do Brasil ➜      pt-br
     United States English ➜    en-us\n
 
- ${_bld}-t [scheduling] ${_nml}or ${_bld}--temporizador [scheduling]${_nml} ➜ Schedule updates.\n
-     ${_bld}Available values:
+ ${_bld}-t [scheduling] ${_nml}or ${_bld}--temporizador [scheduling]${_nml} ➜ Use to schedule updates.\n
+     ${_bld}Periods availables:
      ${_nml}Schedule updates every ${_bld}hour${nml} ➜         ${_bld}1 ${_nml}or ${_bld}hora
      ${_nml}Schedule updates every ${_bld}day${nml} ➜          ${_bld}2 ${_nml}or ${_bld}dia
      ${_nml}Schedule updates every ${_bld}week${nml} ➜         ${_bld}3 ${_nml}or ${_bld}semana
      ${_nml}Schedule updates every ${_bld}month${_nml} ➜        ${_bld}4 ${_nml}or ${_bld}mes
      ${_nml}All update schedules are deleted ➜    ${_bld}0 ${_nml}or ${_bld}nenhum\n
-${_bld}-h${_nml} or ${_bld}--historico${_nml} ➜      Use to display a run history.\n
+ ${_bld}-h${_nml} or ${_bld}--history${_nml} ➜                             Use to display a run history.
+ ${_bld}-h [extension]${_nml} or ${_bld}--history [extension]${_nml} ➜     With the addition of a parameter it is possible to export in a spreadsheet:\n
+    ${_bld}Available extensions:${_nml}
+    ${_nml}Exports the history in a spreadsheet with extension ${_bld}CSV${_nml} ➜     ${_bld}csv
+    ${_nml}Exports the history in a spreadsheet with extension ${_bld}XML${_nml} ➜     ${_bld}xml
+
  ${_bld}-v${_nml} or ${_bld}--versao${_nml} ➜        Use to display the current version. ($versao)\n
  \e]8;;https://github.com/bill1300/atualizar\aAtualizar project (GitHub)\e]8;;\a
  \e]8;;https://bill1300.github.io/atualizar-docs/\aDocumentation (GitHub Pages)\e]8;;\a\n
@@ -701,24 +712,67 @@ ${_bld}-h${_nml} or ${_bld}--historico${_nml} ➜      Use to display a run hist
 
     # Função de apresentar histórico (lista de arquivo: ~/.atualizar/dados.list)
     function apresentarHistorico() {
-        if [ "$idioma" = "pt-br" ]; then
-            cabecalho="Horário / Data / Versão / Número de pacotes"
-            info1="Para acessar todos os registros de atualizações com mais informações entre no diretório: ➜  ${_bld}~/.atualizar/registros/${_nml}\n"
-            info2="Histórico vazio."
-        fi
-        if [ "$idioma" = "en-us" ]; then
-            cabecalho="Time / Date / Version / Number of packages"
-            info1="To access all updates registros with more information, enter the directory: ➜  ${_bld}~/.atualizar/registros/${_nml}\n"
-            info2="History is empty."
-        fi
-        clear
-        cmdLista=$(sudo sed -n '2,$p' ~/.atualizar/dados.list)
-        if [ -z "$cmdLista" ]; then
-            echo -e "${_bld}$info2"
+        param=$1
+        data=$(date +%x)
+        hora=$(date +%X)
+        nomeArquivo=$(date '+%d-%m-%Y_%H-%M-%S')
+
+        if [ -z "$param" ]; then
+            
+            if [ "$idioma" = "pt-br" ]; then
+                cabecalho="Horário, Data, Versão, Número de pacotes"
+                info1="Para acessar todos os registros de atualizações com mais informações entre no diretório: ➜  ${_bld}~/.atualizar/registros/${_nml}\n"
+                info2="Histórico vazio."
+            fi
+            if [ "$idioma" = "en-us" ]; then
+                cabecalho="Time, Date, Version, Number of packages"
+                info1="To access all updates registros with more information, enter the directory: ➜  ${_bld}~/.atualizar/registros/${_nml}\n"
+                info2="History is empty."
+            fi
+            clear
+            cmdLista=$(sudo sed -n '2,$p' ~/.atualizar/dados.list)
+            if [ -z "$cmdLista" ]; then
+                echo -e "${_bld}$info2"
+            else
+                echo -e "$info1"
+                echo -e "${_ttl}$cabecalho"
+                echo -e "${_nml}$cmdLista"
+            fi
+
         else
-            echo -e "$info1"
-            echo -e "${_ttl}$cabecalho"
-            echo -e "${_nml}$cmdLista"
+            if [ "$param" = "csv" ]; then
+                sed '1d' ~/.atualizar/dados.list > ~/planilha_$nomeArquivo.csv
+                sudo mv ~/planilha_$nomeArquivo.csv ~/.atualizar/planilhas/planilha_$nomeArquivo.csv
+                echo -e "$_bld Exportado para CSV em: ~/.atualizar/planilhas/planilha_$nomeArquivo.csv"
+            fi
+            if [ "$param" = "xml" ]; then
+                sed '1d' ~/.atualizar/dados.list > ~/tmp.list
+                nLinhas=$(sed -n '$=' ~/tmp.list)
+                contadorLinhas=1
+
+                sudo echo -e "<xml>" | sudo tee ~/.atualizar/planilhas/planilha_$nomeArquivo.xml >/dev/null
+                while [ "$contadorLinhas" -le "$nLinhas" ]; do
+
+                    dadosLinha=$(sed -n "${contadorLinhas}p" ~/tmp.list)
+
+                    item1=$(echo "$dadosLinha" | sed 's/\([^,]*\),.*/\1/')
+                    item2=$(echo "$dadosLinha" | sed 's/[^,]*, \([^,]*\),.*/\1/')
+                    item3=$(echo "$dadosLinha" | sed 's/[^,]*, [^,]*, \([^,]*\),.*/\1/')
+                    item4=$(echo "$dadosLinha" | sed 's/[^,]*, [^,]*, [^,]*, \([^,]*\)/\1/')
+
+sudo echo -e "\t<indice id="\"$contadorLinhas\"">$item1
+\t\t<data>$item1</data>
+\t\t<hora>$item2</hora>
+\t\t<versao>$item3</versao>
+\t\t<pacote>$item4</pacote>
+\t</indice>" | sudo tee -a ~/.atualizar/planilhas/planilha_$nomeArquivo.xml >/dev/null
+
+                    contadorLinhas=$(( $contadorLinhas + 1 ))
+                done
+                sudo echo -e "</xml>" | sudo tee -a ~/.atualizar/planilhas/planilha_$nomeArquivo.xml >/dev/null
+                rm ~/tmp.list
+                echo -e "$_bld Exportado para XML em: ~/.atualizar/planilhas/planilha_$nomeArquivo.csv"
+            fi
         fi
     }
 
@@ -867,7 +921,7 @@ ${_bld}-h${_nml} or ${_bld}--historico${_nml} ➜      Use to display a run hist
                 mostrarVersao
                 ;;
             -h | --historico)
-                apresentarHistorico
+                apresentarHistorico $param2
                 ;;
             -t | --temporizador)
                 definirTempo $param2

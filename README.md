@@ -55,10 +55,10 @@ Ou execute o aplicativo "atualizar" na sua lista de aplicativos.
 
 Idiomas disponíveis:
 
-Idioma  | Sigla
-------------- | -------------
-:brazil: Português do Brasil | pt-br
-:us: United States English | en-us
+| Idiomas                      | Parâmetro |
+| ---------------------------- | --------- |
+| :brazil: Português do Brasil | pt-br     |
+| :us: United States English   | en-us     |
 
 #### Agendar atualização ➜
  Use para agendar atualização:
@@ -69,12 +69,12 @@ Idioma  | Sigla
 
 Períodos disponíveis:
 
-Descrição  | Parâmetro
-------------- | -------------
-Agenda atualizações todas as **horas** | `hora` ou `1`
-Agenda atualizações todas os **dias** | `dia` ou `2`
-Agenda atualizações todas as **semanas** | `semana` ou `3`
-Agenda atualizações todas os **meses** | `mes` ou `4`
+| Períodos                                 | Parâmetro       |
+| ---------------------------------------- | --------------- |
+| Agenda atualizações todas as **horas**   | `hora` ou `1`   |
+| Agenda atualizações todas os **dias**    | `dia` ou `2`    |
+| Agenda atualizações todas as **semanas** | `semana` ou `3` |
+| Agenda atualizações todas os **meses**   | `mes` ou `4`    |
 
 Para deletar os agendamentos de atualizações utilize: `nenhum` ou `0`
 
@@ -84,6 +84,15 @@ Para deletar os agendamentos de atualizações utilize: `nenhum` ou `0`
 
  Exemplo:
 > atualizar --historico
+
+ Com a adição de um parâmetro é possível exportar a planilha:
+
+| Extensões                                                | Parâmetro |
+| -------------------------------------------------------- | --------- |
+| Exporta o histórico em uma planilha com extensão **CSV** | csv       |
+| Exporta o histórico em uma planilha com extensão **XML** | xml       |
+
+ A planilha gerada no diretório: `~/.atualizar/planinhas`
 
 #### Mostrar versão ➜
  Use para apresentar a versão atual:
