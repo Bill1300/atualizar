@@ -55,10 +55,10 @@ Ou execute o aplicativo "atualizar" na sua lista de aplicativos.
 
 Idiomas disponíveis:
 
-| Idiomas                      | Parâmetro |
-| ---------------------------- | --------- |
-| :brazil: Português do Brasil | pt-br     |
-| :us: United States English   | en-us     |
+| Idiomas                      | Parâmetro   |
+| ---------------------------- | ----------- |
+| :brazil: Português do Brasil | `pt-br`     |
+| :us: United States English   | `en-us`     |
 
 #### Agendar atualização ➜
  Use para agendar atualização:
