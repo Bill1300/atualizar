@@ -244,7 +244,7 @@ Icon=/home/$USER/.atualizar/imagens/atualizar.png" | sudo tee /usr/share/applica
             if [ "$parametroF7" = "paramS" ]; then
                 criarLog $parametroF7
                 notify-send -i ~/.atualizar/imagens/atualizar.png "$notificacaoSimples" "$frase ➜"
-                echo -e "${_ttl}(7/4) $frase ➜ ${_nml}"
+                echo -e "${_ttl}(4/4) $frase ➜ ${_nml}"
             else
                 criarLog
                 notify-send -i ~/.atualizar/imagens/atualizar.png "$notificacaoPadrao" "$frase ➜"
