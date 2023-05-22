@@ -1,5 +1,5 @@
 #!/bin/bash
-versao="23.5.3"
+versao="23.5.4"
 idioma="pt-br"
 
 _alt="\e[1;41m"     #Alerta
